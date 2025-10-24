@@ -1,0 +1,21 @@
+<div class="formations-container">
+    <h2>Liste des Formations</h2>
+
+    <div *ngIf="loading" class="loading">Chargement...</div>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+    <div class="grid">
+        <div *ngFor="let f of formations" class="card">
+            <img [src]="'http://localhost:3000' + f.image" alt="{{ f.titre }}" />
+            <h3>{{ f.titre }}</h3>
+            <p>{{ f.description || 'Pas de description disponible' }}</p>
+            <p><strong>Prix :</strong> {{ f.prix }} FCFA</p>
+            <p><strong>Catégorie :</strong> {{ f.categorie || 'Non spécifiée' }}</p>
+
+    
+     
+            <button (click)="ouvrirFormulaireInscription(f._id!)">S’inscrire</button>
+        </div>
+
+        </div>
+    </div>

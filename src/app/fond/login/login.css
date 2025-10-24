@@ -1,0 +1,158 @@
+/* Réinitialisation globale */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Centrage total du contenu */
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* ⬅️ centrage vertical */
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f7f7f7 0%, #ffffff 100%);
+    padding: 20px;
+}
+
+/* Boîte principale du formulaire */
+.container {
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    padding: 32px;
+    text-align: left;
+}
+
+/* Titre */
+h2 {
+    color: white;
+    background: #0863e2;
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 24px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 2px solid #007bff;
+}
+
+/* Groupes de champs */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+
+/* Champ de saisie */
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    outline: none;
+}
+
+.form-control.is-invalid {
+    border-color: #dc3545;
+}
+
+.invalid-feedback {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Groupe de boutons */
+.button-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn {
+    width: 100%;
+    padding: 12px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+    background: #0863e2;
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #0568ca;
+}
+
+/* Messages d’alerte */
+.alert {
+    padding: 14px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+}
+
+.alert-danger {
+    background: #ffe9e9;
+    color: #c53030;
+}
+
+.alert-success {
+    background: #e6f7ee;
+    color: #2e7d55;
+}
+
+/* Lien mot de passe oublié */
+.nav {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
+    color: #0863e2;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.nav:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .container {
+        padding: 24px;
+        border-radius: 12px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .btn {
+        font-size: 16px;
+    }
+
+    .form-control {
+        font-size: 0.95rem;
+    }
+}

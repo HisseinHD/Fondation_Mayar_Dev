@@ -1,0 +1,62 @@
+<div class="gestion-candidats-container">
+    <h2>Gestion des candidats</h2>
+
+    <div class="filtres">
+        <input type="text" placeholder="Filtrer par nom" [(ngModel)]="filtreNom" />
+        <select [(ngModel)]="filtreFormation">
+            <option value="">Toutes les formations</option>
+            <option *ngFor="let f of formations" [value]="f._id">
+                {{ f.titre }}
+            </option>
+        </select>
+    </div>
+
+    <div *ngIf="loading" class="loading">Chargement...</div>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+    <table *ngIf="!loading && filtrerCandidats().length > 0">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Niveau</th>
+                <th>Formation</th>
+                <th>Date inscription</th>
+                <th>Actions</th>
+                <th>Statut</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let c of filtrerCandidats()">
+                <td>{{ c.nom }}</td>
+                <td>{{ c.prenom }}</td>
+                <td>{{ c.email }}</td>
+                <td>{{ c.tel }}</td>
+                <td>{{ c.niveau || 'Non spécifié' }}</td>
+                <td>{{ c.formation?.titre || 'N/A' }}</td>
+                <td>{{ c.dateInscription | date: 'short' }}</td>
+
+                <td class="action-cell">
+                    <button class="edit">Éditer</button>
+                    <button class="delete" (click)="supprimerCandidat(c._id)">
+                        Supprimer
+                    </button>
+                </td>
+
+                <td class="status-cell">
+                    <select [(ngModel)]="c.statut" (change)="modifierStatut(c, c.statut!)">
+                        <option value="en attente">En attente</option>
+                        <option value="validé">Validé</option>
+                        <option value="refusé">Refusé</option>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p *ngIf="!loading && filtrerCandidats().length === 0">
+        Aucun candidat trouvé.
+    </p>
+</div>

@@ -1,0 +1,89 @@
+.gestion-candidats-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: "Poppins", sans-serif;
+  color: #333;
+}
+
+.gestion-candidats-container h2 {
+  text-align: center;
+  color: #0b66c2;
+  margin-bottom: 20px;
+}
+
+.filtres {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filtres input, .filtres select {
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+tr:hover {
+  background-color: #f2f2f2;
+}
+
+.action-cell {
+  text-align: center;
+}
+
+.status-cell {
+  text-align: center;
+}
+
+/* Boutons */
+button.edit {
+  background-color: #0b66c2;
+  color: white;
+  padding: 5px 10px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button.delete {
+  background-color: #d91f2b;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+select {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+select.en-attente {
+  background-color: #fff3e6;
+  color: #d97706;
+}
+
+select.validé {
+  background-color: #e6ffed;
+  color: #16a34a;
+}
+
+select.refusé {
+  background-color: #ffe6e6;
+  color: #dc2626;
+}

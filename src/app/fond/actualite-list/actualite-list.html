@@ -1,0 +1,21 @@
+<div class="actualite-container">
+    <h2>📰 Liste des Actualités</h2>
+
+    <div *ngIf="loading" class="loading">Chargement des actualités...</div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+
+    <div *ngIf="!loading && actualites.length === 0" class="empty">
+        Aucune actualité disponible.
+    </div>
+
+    <div class="grid" *ngIf="actualites.length > 0">
+        <div class="card" *ngFor="let act of actualites">
+            <img *ngIf="act.image" [src]="'http://localhost:3000' + act.image" alt="{{ act.titre }}" />
+            <div class="content">
+                <h3>{{ act.titre }}</h3>
+                <p>{{ act.description || act.contenu | slice:0:100 }}...</p>
+                <small>🕒 {{ act.createdAt | date: 'medium' }}</small>
+            </div>
+        </div>
+    </div>
+</div>

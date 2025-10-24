@@ -1,0 +1,102 @@
+/* --- Conteneur principal --- */
+.inscription-container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 25px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  font-family: "Poppins", sans-serif;
+  color: #333;
+}
+
+/* --- Titre --- */
+.inscription-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #0b66c2;
+  font-weight: 600;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* --- Formulaire --- */
+.inscription-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.inscription-container label {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.inscription-container input {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.inscription-container input:focus {
+  border-color: #0b66c2;
+  outline: none;
+}
+
+/* --- Bouton --- */
+.inscription-container button {
+  margin-top: 20px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  background-color: #0b66c2;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.inscription-container button:disabled {
+  background-color: #a0c0e5;
+  cursor: not-allowed;
+}
+
+.inscription-container button:hover:not(:disabled) {
+  background-color: #084b80;
+}
+
+/* --- Messages --- */
+.success {
+  margin-top: 15px;
+  color: #28a745;
+  font-weight: 500;
+  text-align: center;
+}
+
+.error {
+  margin-top: 15px;
+  color: #d91f2b;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* --- Responsive --- */
+@media (max-width: 480px) {
+  .inscription-container {
+    margin: 20px 15px;
+    padding: 15px;
+  }
+
+  .inscription-container h2 {
+    font-size: 1.5rem;
+  }
+
+  .inscription-container input,
+  .inscription-container button {
+    font-size: 0.95rem;
+  }
+}

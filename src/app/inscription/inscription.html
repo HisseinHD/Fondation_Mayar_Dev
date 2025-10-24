@@ -1,0 +1,25 @@
+<div class="inscription-container">
+    <h2>Inscription à la formation</h2>
+
+    <form [formGroup]="inscriptionForm" (ngSubmit)="onSubmit()">
+        <label>Nom</label>
+        <input formControlName="nom" type="text" />
+
+        <label>Prénom</label>
+        <input formControlName="prenom" type="text" />
+
+        <label>Email</label>
+        <input formControlName="email" type="email" />
+
+        <label>Téléphone</label>
+        <input formControlName="tel" type="text" />
+
+        <label>Niveau</label>
+        <input formControlName="niveau" type="text" />
+
+        <button type="submit" [disabled]="inscriptionForm.invalid">Envoyer</button>
+    </form>
+
+    <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+</div>

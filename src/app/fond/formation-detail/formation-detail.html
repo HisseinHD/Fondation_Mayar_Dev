@@ -1,0 +1,12 @@
+<div *ngIf="loading" class="loading">Chargement...</div>
+<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+<div *ngIf="formation && !loading" class="detail-container">
+    <img [src]="'http://localhost:3000' + formation.image" alt="{{ formation.titre }}" />
+    <h2>{{ formation.titre }}</h2>
+    <p>{{ formation.description || 'Aucune description disponible.' }}</p>
+    <p><strong>Prix :</strong> {{ formation.prix }} FCFA</p>
+    <p><strong>Catégorie :</strong> {{ formation.categorie || 'Non spécifiée' }}</p>
+    <p><strong>Date début :</strong> {{ formation.dateDebut | date }}</p>
+    <p><strong>Date fin :</strong> {{ formation.dateFin | date }}</p>
+</div>

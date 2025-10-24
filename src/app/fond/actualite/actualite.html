@@ -1,0 +1,21 @@
+<div class="actualite-container">
+    <h2>📰 Gestion des actualités</h2>
+
+    <form [formGroup]="actualiteForm" (ngSubmit)="submit()" class="actualite-form">
+        <input formControlName="titre" type="text" placeholder="Titre" />
+        <textarea formControlName="contenu" placeholder="Contenu"></textarea>
+        <input formControlName="description" type="text" placeholder="Description (optionnelle)" />
+
+        <input type="file" (change)="onFileChange($event)" accept="image/*" />
+
+        <div *ngIf="previewImage" class="preview">
+            <img [src]="previewImage" alt="Aperçu" />
+        </div>
+
+        <button type="submit" [disabled]="isLoading">Publier</button>
+    </form>
+
+    <hr />
+
+ 
+</div>

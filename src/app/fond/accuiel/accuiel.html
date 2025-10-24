@@ -1,0 +1,169 @@
+
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" role="banner">
+        <article class="card intro">
+            <h2>Présentation du projet</h2>
+
+
+            <div class="actions">
+                <div class="action">Dernières actualités</div>
+                <div class="action secondary">Nos actions</div>
+                <div class="action">S'inscrire</div>
+                <div class="action">Dernières actualités</div>
+
+            </div>
+
+            <div class="panel">
+                <h4>Public cible</h4>
+                <div class="public-cible-grid">
+                    <div class="public-item">
+                        <img src="assets/cap11.png" alt="Jeunes" class="public-img">
+                        <div>
+                            <strong>Jeunes :</strong>
+                            <span>Accès à des formations et ateliers pour développer leurs compétences.</span>
+                        </div>
+                    </div>
+                    <div class="public-item">
+                        <img src="assets/jeune1.png" alt="Professionnels" class="public-img">
+                        <div>
+                            <strong>Professionnels :</strong>
+                            <span>Opportunités de perfectionnement et réseautage.</span>
+                        </div>
+                    </div>
+                    <div class="public-item">
+                        <img src="assets/jeune2.png" alt="Partenaires institutionnels" class="public-img">
+                        <div>
+                            <strong>Partenaires institutionnels :</strong>
+                            <span>Collaboration pour des projets éducatifs et sociaux.</span>
+                        </div>
+                    </div>
+                    <div class="public-item">
+                        <img src="assets/cap15.png" alt="Grand public" class="public-img">
+                        <div>
+                            <strong>Grand public :</strong>
+                            <span>Sensibilisation et accès à nos événements et ressources.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h4>Objectifs</h4>
+                <div class="objectifs-grid">
+                    <div class="objectif-card">
+                        <span class="objectif-icon"><img src="assets/cap11.png" alt="Jeunes" class="public-img">
+                        </span>
+                        <strong>Informer</strong>
+                        <p>Diffuser les actualités, opportunités et événements de la fondation auprès du public.</p>
+                    </div>
+                    <div class="objectif-card">
+                        <span class="objectif-icon"><img src="assets/cap11.png" alt="Jeunes" class="public-img">
+                        </span>
+                        <strong>Valoriser</strong>
+                        <p>Mettre en avant les programmes, réussites et témoignages des bénéficiaires.</p>
+                    </div>
+                    <div class="objectif-card">
+                        <span class="objectif-icon"><img src="assets/cap11.png" alt="Jeunes" class="public-img">
+                        </span>
+                        <strong>Faciliter le contact</strong>
+                        <p>Offrir un espace d’échange et de prise de contact rapide pour tous les publics.</p>
+                    </div>
+                    <div class="objectif-card">
+                        <span class="objectif-icon"><img src="assets/cap11.png" alt="Jeunes" class="public-img">
+                        </span>
+                        <strong>Créer une communauté</strong>
+                        <p>Fédérer autour de valeurs de solidarité, d’entraide et de développement durable.</p>
+                    </div>
+                    
+                </div>
+                <app-formation></app-formation>
+            </div>
+        </article>
+
+        <aside class="right-panel" aria-label="Informations complémentaires">
+            <app-actualite-list></app-actualite-list>
+
+            <!-- contact.component.html -->
+            <div class="card contact-info">
+                <h4>Contact rapide</h4>
+
+                <!-- Messages d'alerte -->
+                <div *ngIf="messageSent" class="alert alert-success" role="alert">
+                    Votre message a été envoyé avec succès !
+                </div>
+
+                <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+                    {{ errorMessage }}
+                </div>
+
+                <form class="contact-form" [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+                    <!-- Champ Nom -->
+                    <div class="form-group">
+                        <input type="text" name="nom" placeholder="Votre nom" formControlName="name"
+                            [class.is-invalid]="name?.invalid && name?.touched" required>
+                        <div *ngIf="name?.invalid && name?.touched" class="invalid-feedback">
+                            <div *ngIf="name?.errors?.['required']">Le nom est requis</div>
+                            <div *ngIf="name?.errors?.['minlength']">Le nom doit contenir au moins 2 caractères</div>
+                        </div>
+                    </div>
+
+                    <!-- Champ Email -->
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Votre email" formControlName="email"
+                            [class.is-invalid]="email?.invalid && email?.touched" required>
+                        <div *ngIf="email?.invalid && email?.touched" class="invalid-feedback">
+                            <div *ngIf="email?.errors?.['required']">L'email est requis</div>
+                            <div *ngIf="email?.errors?.['email']">Veuillez entrer un email valide</div>
+                        </div>
+                    </div>
+
+                    <!-- Champ Message -->
+                    <div class="form-group">
+                        <textarea name="message" rows="3" placeholder="Votre message" formControlName="message"
+                            [class.is-invalid]="message?.invalid && message?.touched" required></textarea>
+                        <div *ngIf="message?.invalid && message?.touched" class="invalid-feedback">
+                            <div *ngIf="message?.errors?.['required']">Le message est requis</div>
+                            <div *ngIf="message?.errors?.['minlength']">Le message doit contenir au moins 10 caractères
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bouton d'envoi -->
+                    <button type="submit" class="btn primary" [disabled]="isLoading || contactForm.invalid">
+                        <span *ngIf="!isLoading">Envoyer</span>
+                        <span *ngIf="isLoading">Envoi en cours...</span>
+                    </button>
+                </form>
+            </div>
+        </aside>
+    </section>
+
+    <!-- ===== PANELS ===== -->
+    <section class="grid">
+        <article class="panel">
+            <h4>Actualités</h4>
+            <app-actualite-list></app-actualite-list>
+            <ul class="news-list" id="news">
+                <!-- les news seront injectées par JS -->
+            </ul>
+        </article>
+
+        <article class="panel">
+            <h4>Nos actions</h4>
+            <p>Formations professionnelles, développement personnel, projets communautaires, galerie.</p>
+            <p>Formations professionnelles, développement personnel, projets communautaires, galerie.</p>
+            <p>Formations professionnelles, développement personnel, projets communautaires, galerie.</p>
+            <p>Formations professionnelles, développement personnel, projets communautaires, galerie.</p>
+        </article>
+
+        <article class="panel" id="partenaires">
+            <h4>Partenaires</h4>
+            <p>Liste des partenaires et modalités.</p>
+        </article>
+
+        <div class="panel">
+
+        </div>
+    </section>
+   

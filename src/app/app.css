@@ -1,0 +1,11 @@
+        :root {
+            --turquoise: #48cae4;
+            --turquoise-dark: #0096c7;
+            --gold: #ffd166;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --dark-gray: #6c757d;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --radius: 10px;
+        }
