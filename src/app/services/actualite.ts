@@ -15,7 +15,7 @@ export interface Actualite {
   providedIn: 'root',
 })
 export class ActualiteService {
-  private apiUrl = 'http://localhost:3000/api/actualites';
+  private apiUrl = 'https://fondation-mayar-1.onrender.com/api/actualites';
 
   constructor(private http: HttpClient) {}
 

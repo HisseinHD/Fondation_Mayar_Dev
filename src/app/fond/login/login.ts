@@ -33,23 +33,25 @@ export class Login implements OnInit {
     this.errorMessage = '';
     this.successMessage = '';
 
-    this.http.post('http://localhost:3000/auth/login', this.loginForm.value).subscribe({
-      next: (res: any) => {
-        this.successMessage = 'Connexion réussie !';
-        console.log('Token:', res.token);
+    this.http
+      .post('https://fondation-mayar-1.onrender.com/auth/login', this.loginForm.value)
+      .subscribe({
+        next: (res: any) => {
+          this.successMessage = 'Connexion réussie !';
+          console.log('Token:', res.token);
 
-        // Enregistre le token pour l'utiliser dans addProduct
-        localStorage.setItem('token', res.token);
+          // Enregistre le token pour l'utiliser dans addProduct
+          localStorage.setItem('token', res.token);
 
-        // Redirection vers le workspace
-        this.router.navigate(['/admin']);
+          // Redirection vers le workspace
+          this.router.navigate(['/admin']);
 
-        this.loading = false;
-      },
-      error: (err) => {
-        this.errorMessage = err.error?.message || 'Erreur serveur';
-        this.loading = false;
-      },
-    });
+          this.loading = false;
+        },
+        error: (err) => {
+          this.errorMessage = err.error?.message || 'Erreur serveur';
+          this.loading = false;
+        },
+      });
   }
 }

@@ -19,7 +19,7 @@ export interface Formation {
   providedIn: 'root',
 })
 export class FormationService {
-  private apiUrl = 'http://localhost:3000/api/formations';
+  private apiUrl = 'https://fondation-mayar-1.onrender.com/api/formations';
 
   constructor(private http: HttpClient) {}
 

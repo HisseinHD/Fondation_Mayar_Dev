@@ -46,16 +46,18 @@ export class GestionCandidatsComponent implements OnInit {
 
   // 🔹 Récupération des formations
   getFormations() {
-    this.http.get<Formation[]>('http://localhost:3000/api/formations').subscribe({
-      next: (res) => (this.formations = Array.isArray(res) ? res : []),
-      error: (err) => console.error('Erreur récupération formations', err),
-    });
+    this.http
+      .get<Formation[]>('https://fondation-mayar-1.onrender.com/api/formations')
+      .subscribe({
+        next: (res) => (this.formations = Array.isArray(res) ? res : []),
+        error: (err) => console.error('Erreur récupération formations', err),
+      });
   }
 
   // 🔹 Récupération des candidats
   getCandidats() {
     this.loading = true;
-    const url = 'http://localhost:3000/api/inscription/candidats';
+    const url = 'https://fondation-mayar-1.onrender.com/api/inscription/candidats';
     this.http.get<Candidat[]>(url).subscribe({
       next: (res) => {
         this.candidats = Array.isArray(res) ? res : [];
@@ -87,7 +89,10 @@ export class GestionCandidatsComponent implements OnInit {
   modifierStatut(candidat: Candidat, statut: StatutCandidat) {
     if (!statut) return;
     this.http
-      .put(`http://localhost:3000/api/inscription/${candidat._id}/statut`, { statut })
+      .put(
+        `https://fondation-mayar-1.onrender.com/api/inscription/${candidat._id}/statut`,
+        { statut }
+      )
       .subscribe({
         next: () => (candidat.statut = statut),
         error: (err) => console.error('Erreur mise à jour statut', err),
@@ -97,9 +102,11 @@ export class GestionCandidatsComponent implements OnInit {
   // 🔹 Supprimer un candidat
   supprimerCandidat(id: string) {
     if (!confirm('Confirmer la suppression ?')) return;
-    this.http.delete(`http://localhost:3000/api/inscription/${id}`).subscribe({
-      next: () => (this.candidats = this.candidats.filter((c) => c._id !== id)),
-      error: (err) => console.error('Erreur suppression candidat', err),
-    });
+    this.http
+      .delete(`https://fondation-mayar-1.onrender.com/api/inscription/${id}`)
+      .subscribe({
+        next: () => (this.candidats = this.candidats.filter((c) => c._id !== id)),
+        error: (err) => console.error('Erreur suppression candidat', err),
+      });
   }
 }

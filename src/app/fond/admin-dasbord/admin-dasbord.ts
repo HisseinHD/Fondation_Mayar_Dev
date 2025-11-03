@@ -1,11 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
 declare var Chart: any; // Déclare Chart pour éviter les erreurs TypeScript
 
 @Component({
   selector: 'app-admin-dasbord',
-  imports: [CommonModule,RouterLink],
+  imports: [CommonModule],
   templateUrl: './admin-dasbord.html',
   styleUrl: './admin-dasbord.css',
 })
@@ -28,8 +27,8 @@ export class AdminDasbord implements OnInit {
               {
                 label: 'Participants',
                 data: [65, 78, 66, 82, 90, 75, 60],
-                borderColor: '#0077b6',
-                backgroundColor: 'rgba(0, 119, 182, 0.15)',
+                borderColor: '#202425ff',
+                backgroundColor: 'rgba(2, 2, 2, 0.15)',
                 borderWidth: 2,
                 tension: 0.4,
                 fill: true,

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class InscriptionService {
-  private apiUrl = 'http://localhost:3000/api/inscription';
+  private apiUrl = 'https://fondation-mayar-1.onrender.com/api/inscription';
 
   constructor(private http: HttpClient) {}
 
