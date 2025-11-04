@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../environments/ environment';  // ← import environment
 
 export interface ContactForm {
   name: string;
@@ -42,7 +43,7 @@ export interface FormationsResponse {
   providedIn: 'root',
 })
 export class Accueil {
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = `${environment.apiUrl}`; // ← dynamique selon environment
 
   constructor(private http: HttpClient) {}
 
@@ -65,6 +66,7 @@ export class Accueil {
   // Récupération des formations récentes
   getRecentFormations(limit: number = 3): Observable<FormationsResponse> {
     const params = new HttpParams().set('page', '1').set('limit', limit.toString());
+
     return this.http.get<FormationsResponse>(`${this.apiUrl}/formations`, { params });
   }
 }

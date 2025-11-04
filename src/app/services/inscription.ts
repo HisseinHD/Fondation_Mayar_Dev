@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../environments/ environment';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class InscriptionService {
-  private apiUrl = 'https://fondation-mayar-1.onrender.com/api/inscription';
+  private apiUrl = `${environment.apiUrl}/inscription`; // ← dynamique selon environment
 
   constructor(private http: HttpClient) {}
 
