@@ -48,20 +48,16 @@
               "namedChunks": true,
               "aot": false
             }
-          },
-          "defaultConfiguration": "production"
+          }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "mayar-fond:build"
+            "browserTarget": "mayar-fond:build:development"
           },
           "configurations": {
             "production": {
               "browserTarget": "mayar-fond:build:production"
-            },
-            "development": {
-              "browserTarget": "mayar-fond:build:development"
             }
           }
         },
