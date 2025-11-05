@@ -41,8 +41,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "serviceWorker": false,
-              "ngswConfigPath": "ngsw-config.json"
+              "serviceWorker": false
             },
             "development": {
               "optimization": false,
@@ -62,10 +61,10 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "mayar-fond:build:production"
+              "buildTarget": "mayar-fond:build:production"
             },
             "development": {
-              "browserTarget": "mayar-fond:build:development"
+              "buildTarget": "mayar-fond:build:development"
             }
           },
           "defaultConfiguration": "development"
