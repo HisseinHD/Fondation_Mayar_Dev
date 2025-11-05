@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment'; // ← import environment
+import { environment } from '../../environments/environment';
 
 export interface Actualite {
   _id?: string;
@@ -16,15 +16,14 @@ export interface Actualite {
   providedIn: 'root',
 })
 export class ActualiteService {
-  private apiUrl = `${environment.apiUrl}/actualites`; // ← dynamique selon environment
+  private apiUrl = `${environment.apiUrl}/actualites`;
 
   constructor(private http: HttpClient) {}
 
-  // 🔐 Header d’authentification pour routes protégées
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('token');
     return new HttpHeaders({
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token || ''}`,
     });
   }
 

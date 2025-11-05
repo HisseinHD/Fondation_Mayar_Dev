@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { NgFor, NgIf } from '@angular/common';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { ActualiteService } from '../../services/actualite';
+import { Actualite } from '../../services/actualite';
 
 @Component({
   selector: 'app-actualite-list',
@@ -11,19 +11,19 @@ import { NgFor, NgIf } from '@angular/common';
   styleUrls: ['./actualite-list.css'],
 })
 export class ActualiteListComponent implements OnInit {
-  actualites: any[] = [];
+  actualites: Actualite[] = [];
   loading = true;
   error = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private actualiteService: ActualiteService) {}
 
   ngOnInit() {
     this.loadActualites();
   }
 
   loadActualites() {
-    this.http.get<any>('http://localhost:3000/api/actualites').subscribe({
-      next: (res) => {
+    this.actualiteService.getAll().subscribe({
+      next: (res: any) => {
         this.actualites = res.actualites || [];
         this.loading = false;
       },
