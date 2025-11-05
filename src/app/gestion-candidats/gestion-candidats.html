@@ -5,9 +5,7 @@
         <input type="text" placeholder="Filtrer par nom" [(ngModel)]="filtreNom" />
         <select [(ngModel)]="filtreFormation">
             <option value="">Toutes les formations</option>
-            <option *ngFor="let f of formations" [value]="f._id">
-                {{ f.titre }}
-            </option>
+            <option *ngFor="let f of formations" [value]="f._id">{{ f.titre }}</option>
         </select>
     </div>
 
@@ -30,22 +28,20 @@
         </thead>
         <tbody>
             <tr *ngFor="let c of filtrerCandidats()">
-                <td>{{ c.nom }}</td>
-                <td>{{ c.prenom }}</td>
-                <td>{{ c.email }}</td>
-                <td>{{ c.tel }}</td>
-                <td>{{ c.niveau || 'Non spécifié' }}</td>
-                <td>{{ c.formation?.titre || 'N/A' }}</td>
-                <td>{{ c.dateInscription | date: 'short' }}</td>
+                <td data-label="Nom">{{ c.nom }}</td>
+                <td data-label="Prénom">{{ c.prenom }}</td>
+                <td data-label="Email">{{ c.email }}</td>
+                <td data-label="Téléphone">{{ c.tel }}</td>
+                <td data-label="Niveau">{{ c.niveau || 'Non spécifié' }}</td>
+                <td data-label="Formation">{{ c.formation?.titre || 'N/A' }}</td>
+                <td data-label="Date">{{ c.dateInscription | date: 'short' }}</td>
 
-                <td class="action-cell">
+                <td data-label="Actions" class="action-cell">
                     <button class="edit">Éditer</button>
-                    <button class="delete" (click)="supprimerCandidat(c._id)">
-                        Supprimer
-                    </button>
+                    <button class="delete" (click)="supprimerCandidat(c._id)">Supprimer</button>
                 </td>
 
-                <td class="status-cell">
+                <td data-label="Statut" class="status-cell">
                     <select [(ngModel)]="c.statut" (change)="modifierStatut(c, c.statut!)">
                         <option value="en attente">En attente</option>
                         <option value="validé">Validé</option>

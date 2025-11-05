@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActualiteService, Actualite } from '../../services/actualite';
 import { HttpClientModule } from '@angular/common/http';
+import { ActualiteService, Actualite } from '../../services/actualite';
 
 @Component({
   selector: 'app-actualite',
@@ -27,7 +27,6 @@ export class ActualiteComponent implements OnInit {
       contenu: ['', Validators.required],
       description: [''],
     });
-
     this.loadActualites();
   }
 
@@ -50,7 +49,7 @@ export class ActualiteComponent implements OnInit {
 
   submit(): void {
     if (this.actualiteForm.invalid || !this.selectedImage) {
-      this.errorMessage = 'Remplissez tous les champs et ajoutez une image.';
+      this.errorMessage = 'Remplis tous les champs et ajoute une image.';
       return;
     }
 
@@ -73,11 +72,14 @@ export class ActualiteComponent implements OnInit {
         console.error(err);
         this.errorMessage = 'Erreur lors de l’ajout';
       },
-      complete: () => (this.isLoading = false),
+      complete: () => {
+        this.isLoading = false;
+      },
     });
   }
 
-  delete(id: string): void {
+  delete(id?: string): void {
+    if (!id) return;
     if (confirm('Supprimer cette actualité ?')) {
       this.actualiteService.delete(id).subscribe({
         next: () => {

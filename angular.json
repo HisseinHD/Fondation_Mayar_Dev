@@ -46,25 +46,29 @@
               "optimization": false,
               "sourceMap": true,
               "namedChunks": true,
-              "aot": false
+              "aot": true
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "mayar-fond:build:development"
+            "buildTarget": "mayar-fond:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "mayar-fond:build:production"
+              "buildTarget": "mayar-fond:build:production"
+            },
+            "development": {
+              "buildTarget": "mayar-fond:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "mayar-fond:build"
+            "buildTarget": "mayar-fond:build"
           }
         },
         "test": {
@@ -76,10 +80,18 @@
             "styles": ["src/styles.css"],
             "scripts": []
           }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["tsconfig.app.json", "tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
+          }
         }
       }
     }
   },
+  "defaultProject": "mayar-fond",
   "cli": {
     "analytics": false
   }
