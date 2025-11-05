@@ -15,7 +15,7 @@
             "outputPath": "dist/mayar-fond",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
@@ -40,15 +40,20 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "serviceWorker": false,
+              "ngswConfigPath": "ngsw-config.json"
             },
             "development": {
               "optimization": false,
               "sourceMap": true,
               "namedChunks": true,
-              "aot": true
+              "aot": true,
+              "vendorChunk": true,
+              "extractLicenses": false
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -57,10 +62,10 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "mayar-fond:build:production"
+              "browserTarget": "mayar-fond:build:production"
             },
             "development": {
-              "buildTarget": "mayar-fond:build:development"
+              "browserTarget": "mayar-fond:build:development"
             }
           },
           "defaultConfiguration": "development"
