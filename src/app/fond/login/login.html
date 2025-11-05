@@ -1,7 +1,20 @@
 <main class="main">
     <div class="container">
-        <h2>Connexion</h2>
+        <!-- En-tête avec boutons de basculement -->
+        <div class="auth-header">
+            <button class="auth-tab"
+                [class.active]="!isRegisterMode && !isForgotPasswordMode && !isOtpMode && !isOtpResetMode && !isResetPasswordMode"
+                (click)="switchToLogin()">
+                Connexion
+            </button>
+            <button class="auth-tab"
+                [class.active]="isRegisterMode && !isOtpMode && !isOtpResetMode && !isResetPasswordMode"
+                (click)="switchToRegister()">
+                Inscription
+            </button>
+        </div>
 
+        <!-- Messages d'alerte -->
         <div *ngIf="errorMessage" class="alert alert-danger">
             {{ errorMessage }}
         </div>
@@ -9,7 +22,9 @@
             {{ successMessage }}
         </div>
 
-        <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <!-- Formulaire de CONNEXION -->
+        <form *ngIf="!isRegisterMode && !isForgotPasswordMode && !isOtpMode && !isOtpResetMode && !isResetPasswordMode"
+            [formGroup]="loginForm" (ngSubmit)="login()">
             <div class="form-group">
                 <label>Email</label>
                 <input type="email" formControlName="email" class="form-control"
@@ -35,11 +50,206 @@
                     {{ loading ? 'Connexion...' : 'Se connecter' }}
                 </button>
             </div>
-            
-                <a routerLink="/" class="nav">
+
+            <div class="auth-links">
+                <a (click)="switchToForgotPassword()" class="nav-link">
                     Mot de passe oublié ?
                 </a>
-        
+            </div>
+        </form>
+
+        <!-- Formulaire d'INSCRIPTION -->
+        <form *ngIf="isRegisterMode && !isOtpMode && !isOtpResetMode && !isResetPasswordMode" [formGroup]="registerForm"
+            (ngSubmit)="register()">
+            <div class="form-group">
+                <label>Nom complet</label>
+                <input type="text" formControlName="name" class="form-control"
+                    [class.is-invalid]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+                <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched"
+                    class="invalid-feedback">
+                    Le nom est requis
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" formControlName="email" class="form-control"
+                    [class.is-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+                <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+                    class="invalid-feedback">
+                    Email invalide
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <input type="password" formControlName="password" class="form-control"
+                    [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+                <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+                    class="invalid-feedback">
+                    Le mot de passe doit contenir au moins 6 caractères
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Confirmer le mot de passe</label>
+                <input type="password" formControlName="confirmPassword" class="form-control"
+                    [class.is-invalid]="(registerForm.get('confirmPassword')?.invalid || registerForm.hasError('passwordMismatch')) && registerForm.get('confirmPassword')?.touched">
+                <div *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched"
+                    class="invalid-feedback">
+                    Les mots de passe ne correspondent pas
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid || loading">
+                    {{ loading ? 'Inscription...' : 'S\'inscrire' }}
+                </button>
+            </div>
+        </form>
+
+        <!-- Formulaire de VÉRIFICATION OTP pour inscription -->
+        <form *ngIf="isOtpMode" [formGroup]="otpForm" (ngSubmit)="verifyOtp()">
+            <div class="otp-header">
+                <h3>Vérification de l'email</h3>
+                <p>Nous avons envoyé un code OTP à <strong>{{ pendingEmail }}</strong></p>
+                <p class="otp-info">
+                    <strong>Administrateur de la Fondation Mayar :</strong>
+                    Veuillez contacter l'administrateur pour être autorisé à accéder à la plateforme.
+                </p>
+                <p class="otp-info">Le code OTP expirera dans 10 minutes</p>
+            </div>
+
+            <div class="form-group">
+                <label>Code OTP</label>
+                <input type="text" formControlName="otp" class="form-control otp-input" maxlength="6"
+                    placeholder="Entrez le code à 6 chiffres"
+                    [class.is-invalid]="otpForm.get('otp')?.invalid && otpForm.get('otp')?.touched">
+                <div *ngIf="otpForm.get('otp')?.invalid && otpForm.get('otp')?.touched" class="invalid-feedback">
+                    Le code OTP doit contenir 6 chiffres
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary" [disabled]="otpForm.invalid || loading">
+                    {{ loading ? 'Vérification...' : 'Vérifier le code' }}
+                </button>
+            </div>
+
+            <div class="auth-links">
+                <a (click)="resendOtp()" class="nav-link" [class.disabled]="resendCooldown > 0">
+                    {{ resendCooldown > 0 ? 'Renvoyer le code (' + resendCooldown + 's)' : 'Renvoyer le code' }}
+                </a>
+                <a (click)="switchToRegister()" class="nav-link">
+                    Modifier l'email
+                </a>
+            </div>
+        </form>
+
+        <!-- Formulaire MOT DE PASSE OUBLIÉ - Étape 1: Demande -->
+        <form *ngIf="isForgotPasswordMode && !isOtpResetMode && !isResetPasswordMode" [formGroup]="forgotPasswordForm"
+            (ngSubmit)="forgotPassword()">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" formControlName="email" class="form-control"
+                    [class.is-invalid]="forgotPasswordForm.get('email')?.invalid && forgotPasswordForm.get('email')?.touched">
+                <div *ngIf="forgotPasswordForm.get('email')?.invalid && forgotPasswordForm.get('email')?.touched"
+                    class="invalid-feedback">
+                    Email invalide
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary" [disabled]="forgotPasswordForm.invalid || loading">
+                    {{ loading ? 'Envoi...' : 'Envoyer le code de réinitialisation' }}
+                </button>
+            </div>
+
+            <div class="auth-links">
+                <a (click)="switchToLogin()" class="nav-link">
+                    Retour à la connexion
+                </a>
+            </div>
+        </form>
+
+        <!-- Formulaire OTP pour RÉINITIALISATION - Étape 2: Vérification OTP -->
+        <form *ngIf="isOtpResetMode" [formGroup]="otpForm" (ngSubmit)="verifyResetOtp()">
+            <div class="otp-header">
+                <h3>Réinitialisation du mot de passe</h3>
+                <p>Nous avons envoyé un code OTP de réinitialisation à <strong>{{ pendingEmail }}</strong></p>
+                <p class="otp-info">Le code OTP expirera dans 10 minutes</p>
+            </div>
+
+            <div class="form-group">
+                <label>Code OTP</label>
+                <input type="text" formControlName="otp" class="form-control otp-input" maxlength="6"
+                    placeholder="Entrez le code à 6 chiffres"
+                    [class.is-invalid]="otpForm.get('otp')?.invalid && otpForm.get('otp')?.touched">
+                <div *ngIf="otpForm.get('otp')?.invalid && otpForm.get('otp')?.touched" class="invalid-feedback">
+                    Le code OTP doit contenir 6 chiffres
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary" [disabled]="otpForm.invalid || loading">
+                    {{ loading ? 'Vérification...' : 'Vérifier le code' }}
+                </button>
+            </div>
+
+            <div class="auth-links">
+                <a (click)="resendOtp()" class="nav-link" [class.disabled]="resendCooldown > 0">
+                    {{ resendCooldown > 0 ? 'Renvoyer le code (' + resendCooldown + 's)' : 'Renvoyer le code' }}
+                </a>
+                <a (click)="switchToForgotPassword()" class="nav-link">
+                    Modifier l'email
+                </a>
+                <a (click)="switchToLogin()" class="nav-link">
+                    Retour à la connexion
+                </a>
+            </div>
+        </form>
+
+        <!-- Formulaire RÉINITIALISATION MOT DE PASSE - Étape 3: Nouveau mot de passe -->
+        <form *ngIf="isResetPasswordMode" [formGroup]="resetPasswordForm" (ngSubmit)="resetPassword()">
+            <div class="otp-header">
+                <h3>Nouveau mot de passe</h3>
+                <p>Définissez votre nouveau mot de passe pour <strong>{{ pendingEmail }}</strong></p>
+            </div>
+
+            <div class="form-group">
+                <label>Nouveau mot de passe</label>
+                <input type="password" formControlName="newPassword" class="form-control"
+                    [class.is-invalid]="resetPasswordForm.get('newPassword')?.invalid && resetPasswordForm.get('newPassword')?.touched">
+                <div *ngIf="resetPasswordForm.get('newPassword')?.invalid && resetPasswordForm.get('newPassword')?.touched"
+                    class="invalid-feedback">
+                    Le mot de passe doit contenir au moins 6 caractères
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Confirmer le nouveau mot de passe</label>
+                <input type="password" formControlName="confirmPassword" class="form-control"
+                    [class.is-invalid]="(resetPasswordForm.get('confirmPassword')?.invalid || resetPasswordForm.hasError('passwordMismatch')) && resetPasswordForm.get('confirmPassword')?.touched">
+                <div *ngIf="resetPasswordForm.hasError('passwordMismatch') && resetPasswordForm.get('confirmPassword')?.touched"
+                    class="invalid-feedback">
+                    Les mots de passe ne correspondent pas
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary" [disabled]="resetPasswordForm.invalid || loading">
+                    {{ loading ? 'Réinitialisation...' : 'Réinitialiser le mot de passe' }}
+                </button>
+            </div>
+
+            <div class="auth-links">
+                <a (click)="switchToOtpReset()" class="nav-link">
+                    Retour à la vérification du code
+                </a>
+                <a (click)="switchToLogin()" class="nav-link">
+                    Retour à la connexion
+                </a>
+            </div>
         </form>
     </div>
 </main>

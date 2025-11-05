@@ -2,10 +2,15 @@
     <!-- Logo -->
     <div class="logo">
         <img src="assets/cap12.png" alt="Logo Fondation Mayar" width="120">
+        
     </div>
-
+<img src="assets/langue/fr.png" alt="Français" width="32" height="22" [class.active]="currentLang === 'fr'"
+    (click)="setLanguage('fr')">
+<img src="assets/langue/ar.png" alt="العربية" width="32" height="22" [class.active]="currentLang === 'ar'"
+    (click)="setLanguage('ar')">
     <!-- Brand -->
     <div class="brand">
+        
         <h1>Fondation Mayar</h1>
         <h4>Pour la Formation et le Développement Professionnel</h4>
         <p>Institution éducative et humanitaire</p>
@@ -22,10 +27,7 @@
         <a class="btn alt" routerLink="/formation" (click)="closeMenu()">Formations</a>
         <a class="btn primary" routerLink="/actualites" (click)="closeMenu()">Actualités</a>
         <a class="btn alt" routerLink="/apropos" (click)="closeMenu()">À propos</a>
-        <img src="assets/langue/fr.png" alt="Français" width="32" height="22" [class.active]="currentLang === 'fr'"
-            (click)="setLanguage('fr')">
-        <img src="assets/langue/ar.png" alt="العربية" width="32" height="22" [class.active]="currentLang === 'ar'"
-            (click)="setLanguage('ar')">
+       
     </nav>
 
     <!-- Conteneur outils (admin + langue) -->
