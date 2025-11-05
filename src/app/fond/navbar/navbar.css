@@ -15,23 +15,24 @@
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   font-family: var(--font-main);
-  margin: 0;
   background: linear-gradient(180deg, var(--light), #fff);
   color: var(--dark);
 }
 
-/* ========== WRAP ========== */
+/* WRAP */
 .wrap {
   width: 100%;
   margin: 0;
   padding: 70px 12px 60px;
 }
 
-/* ========== HEADER ========== */
+/* HEADER */
 header.site-header {
   display: flex;
   align-items: center;
@@ -75,20 +76,17 @@ header.site-header .brand {
 
 header.site-header .brand h1 {
   font-size: 1rem;
-  margin: 0;
   color: var(--red);
   font-weight: bold;
 }
 
 header.site-header .brand h4 {
   font-size: 0.8rem;
-  margin: 0;
   color: var(--blue-dark);
 }
 
 header.site-header .brand p {
   font-size: 0.7rem;
-  margin: 0;
   color: var(--muted);
 }
 
@@ -97,28 +95,24 @@ header.site-header .cta {
   display: flex;
   align-items: center;
   gap: 10px;
-  position: static;
-  background: transparent;
-  box-shadow: none;
   flex-direction: row;
-  width: auto;
   padding: 0;
 }
 
-/* Boutons CTA */
+/* Buttons */
 header.site-header .btn {
   font-size: 0.85rem;
   padding: 6px 12px;
   border-radius: 6px;
-  text-align: center;
   text-decoration: none;
   font-weight: 600;
   transition: 0.3s;
+  text-align: center;
 }
 
 header.site-header .btn.primary {
   background: var(--blue);
-  color: white;
+  color: var(--white);
 }
 
 header.site-header .btn.primary:hover {
@@ -133,15 +127,15 @@ header.site-header .btn.alt {
 
 header.site-header .btn.alt:hover {
   background: var(--blue);
-  color: white;
+  color: var(--white);
 }
 
-/* Burger */
+/* Menu toggle */
 header.site-header .menu-toggle {
   display: none;
   font-size: 1.4rem;
   background: var(--blue);
-  color: white;
+  color: var(--white);
   border: none;
   border-radius: 6px;
   padding: 4px 8px;
@@ -154,14 +148,39 @@ header.site-header .menu-toggle:hover {
   transform: scale(1.05);
 }
 
-/* Language switcher */
-header.site-header .language-switcher {
+/* Conteneur admin + langue aligné avec le menu */
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap; /* toujours sur une ligne */
+  margin-left: 10px; /* espace depuis les autres éléments */
+}
+
+.admin-login {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  text-decoration: none;
+  color: var(--white);
+  background-color: #444;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: opacity 0.3s, background-color 0.3s;
+  white-space: nowrap; /* empêche de passer à la ligne */
+}
+
+.admin-login:hover {
+  opacity: 1;
+  background-color: #222;
+}
+
+.language-switcher {
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-header.site-header .language-switcher img {
+.language-switcher img {
   width: 22px;
   height: 14px;
   border-radius: 2px;
@@ -170,16 +189,16 @@ header.site-header .language-switcher img {
   transition: all 0.2s;
 }
 
-header.site-header .language-switcher img.active,
-header.site-header .language-switcher img:hover {
+.language-switcher img.active,
+.language-switcher img:hover {
   border: 1px solid var(--blue);
   transform: scale(1.1);
 }
 
-/* ========== RESPONSIVE : MOBILE ========== */
+/* Responsive mobile */
 @media (max-width: 700px) {
   header.site-header {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     justify-content: space-between;
     padding: 6px 10px;
   }
@@ -189,10 +208,10 @@ header.site-header .language-switcher img:hover {
     height: 40px;
   }
 
-  /* On garde le nom principal abrégé */
   header.site-header .brand h1 {
     font-size: 0.9rem;
   }
+
   header.site-header .brand h4,
   header.site-header .brand p {
     display: none;
@@ -202,7 +221,6 @@ header.site-header .language-switcher img:hover {
     display: block;
   }
 
-  /* Menu caché par défaut */
   header.site-header .cta {
     display: none;
     position: absolute;
@@ -217,7 +235,6 @@ header.site-header .language-switcher img:hover {
     width: 90%;
     max-width: 280px;
     z-index: 2000;
-    align-items: stretch;
   }
 
   header.site-header.menu-open .cta {
@@ -226,23 +243,28 @@ header.site-header .language-switcher img:hover {
 
   header.site-header .btn {
     width: 100%;
-    text-align: center;
-    font-size: 0.85rem;
     padding: 8px;
   }
 
-  header.site-header .language-switcher {
-    justify-content: center;
-    margin-top: 4px;
+  .header-tools {
+    margin-left: 0;
+    margin-top: 6px;
+    justify-content: flex-end;
+    width: 100%;
   }
 
-  header.site-header .language-switcher img {
+  .admin-login {
+    font-size: 0.8rem;
+    padding: 3px 6px;
+  }
+
+  .language-switcher img {
     width: 20px;
     height: 12px;
   }
 }
 
-/* ========== TRES PETIT ÉCRAN ========== */
+/* Très petit écran */
 @media (max-width: 400px) {
   header.site-header .logo {
     width: 35px;
@@ -265,7 +287,7 @@ header.site-header .language-switcher img:hover {
   }
 }
 
-/* ========== HERO + GRID ========== */
+/* HERO + GRID */
 .hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -280,7 +302,7 @@ header.site-header .language-switcher img:hover {
   margin-top: 12px;
 }
 
-/* CARTES */
+/* Cartes */
 .panel,
 .formation-card,
 .formation-next {
@@ -328,7 +350,7 @@ header.site-header .language-switcher img:hover {
   }
 }
 
-/* ========== FOOTER ========== */
+/* FOOTER */
 footer {
   font-size: 0.9rem;
   padding: 8px 10px;
