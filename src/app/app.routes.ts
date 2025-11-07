@@ -22,7 +22,6 @@ export const routes: Routes = [
       { path: 'formation', component: FormationComponent },
       { path: 'login', component: Login },
       { path: 'actualites', component: ActualiteListComponent },
-      { path: 'formation/:id', component: FormationDetailComponent },
       { path: 'inscription/:id', component: InscriptionComponent },
       { path: 'liste-inscrits/:id', component: ListeInscritsComponent },
     ],

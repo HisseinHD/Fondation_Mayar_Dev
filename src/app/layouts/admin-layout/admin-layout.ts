@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-layout',
@@ -26,7 +27,9 @@ import { CommonModule } from '@angular/common';
         <li><a routerLink="/admin/actualites" routerLinkActive="active">ListActualite</a></li>
         <li><a routerLink="/admin/stats" routerLinkActive="active">Statistiques</a></li>
         <li><a routerLink="/admin/parametres" routerLinkActive="active">Paramètres</a></li>
-        <li><a routerLink="/logout">Déconnexion</a></li>
+        <div class="sidebar-footer">
+          <button class="logout-btn" (click)="logout()">Déconnexion</button>
+        </div>
       </ul>
     </aside>
 
@@ -43,7 +46,18 @@ import { CommonModule } from '@angular/common';
 export class AdminLayoutComponent {
   sidebarOpen = false;
 
+  constructor(private router: Router) {}
+
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  logout() {
+    // Supprimer le token et le rôle
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+
+    // Rediriger vers la page de login
+    this.router.navigate(['/login']);
   }
 }

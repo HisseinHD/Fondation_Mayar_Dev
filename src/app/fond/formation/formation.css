@@ -1,112 +1,155 @@
-/* --- Conteneur principal --- */
+/* Conteneur principal */
 .formations-container {
-  max-width: 1200px;
-  margin: 40px auto;
   padding: 20px;
-  font-family: "Poppins", sans-serif;
-  color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* --- Titre principal --- */
+/* Titres */
 .formations-container h2 {
-  text-align: center;
-  margin-bottom: 30px;
-  color: #0b66c2; /* bleu Mayar */
-  font-weight: 600;
-  font-size: 2rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  margin-bottom: 20px;
+  color: #1f2937;
 }
 
-/* --- Messages de chargement et d'erreur --- */
-.loading {
+/* Messages */
+.loading,
+.error,
+.no-data {
   text-align: center;
-  color: #0b66c2;
-  font-weight: 500;
-}
-
-.error {
-  text-align: center;
-  color: #d91f2b;
+  margin: 20px 0;
   font-weight: bold;
+  color: #ef4444; /* rouge pour erreurs */
+}
+
+/* 🏷 Tableau admin / connecté */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
   margin-bottom: 20px;
 }
 
-/* --- Grille des cartes --- */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 25px;
-  margin-top: 20px;
+.admin-table th,
+.admin-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+  vertical-align: middle;
 }
 
-/* --- Carte de formation --- */
+.admin-table th {
+  background-color: #f3f4f6;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.admin-table td img {
+  border-radius: 4px;
+}
+
+/* Actions dans le tableau */
+.admin-table .actions button {
+  margin-right: 5px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s;
+}
+
+/* Boutons spécifiques */
+.btn-modifier {
+  background-color: #3498db; /* bleu */
+}
+
+.btn-modifier:hover {
+  background-color: #2980b9;
+}
+
+.btn-supprimer {
+  background-color: #e74c3c; /* rouge */
+}
+
+.btn-supprimer:hover {
+  background-color: #c0392b;
+}
+
+.btn-voir {
+  background-color: #2ecc71; /* vert */
+}
+
+.btn-voir:hover {
+  background-color: #27ae60;
+}
+
+/* 🧑‍🎓 Grille de cartes pour visiteurs */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
 .card {
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   overflow: hidden;
-  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
 }
 
-/* --- Image --- */
 .card img {
   width: 100%;
-  height: 180px;
+  height: 150px;
   object-fit: cover;
 }
 
-/* --- Titre de formation --- */
 .card h3 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #084b80;
-  margin: 15px 15px 10px;
+  margin: 10px;
+  color: #1f2937;
 }
 
-/* --- Description --- */
 .card p {
-  margin: 5px 15px;
-  font-size: 0.95rem;
-  line-height: 1.5;
+  margin: 5px 10px;
+  color: #4b5563;
+  font-size: 0.9rem;
 }
 
-.card strong {
-  color: #0b66c2;
+/* Actions sur les cartes */
+.card .actions {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
 }
 
-/* --- Responsive --- */
+.card .actions button {
+  flex: 1;
+  margin-right: 5px;
+}
+
+.card .actions button:last-child {
+  margin-right: 0;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .formations-container {
-    padding: 10px;
+  .admin-table th,
+  .admin-table td {
+    font-size: 0.8rem;
+    padding: 6px;
   }
 
   .card img {
-    height: 160px;
+    height: 120px;
   }
 
   .card h3 {
     font-size: 1rem;
   }
-}.card button {
-  margin: 15px;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 6px;
-  background-color: #0b66c2;
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.card button:hover {
-  background-color: #084b80;
 }

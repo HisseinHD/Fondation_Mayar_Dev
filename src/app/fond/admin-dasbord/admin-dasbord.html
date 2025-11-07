@@ -1,0 +1,46 @@
+<div class="dashboard-container">
+    <h1>Tableau de bord - Fondation Mayar</h1>
+
+    <!-- 🧮 Statistiques principales -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Total Formations</h3>
+            <p>{{ totalFormations }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Candidats</h3>
+            <p>{{ totalCandidats }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Formations Actives</h3>
+            <p>{{ formationsActives }}</p>
+        </div>
+    </div>
+
+    <!-- 📈 Graphiques -->
+    <div class="charts-grid">
+        <div class="chart-card">
+            <h3>Évolution des Inscriptions</h3>
+            <canvas id="performanceChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h3>Répartition par catégorie</h3>
+            <canvas id="donationsChart"></canvas>
+        </div>
+    </div>
+
+    <!-- 🏆 Formations populaires -->
+    <div class="popular-section">
+        <h2>Formations populaires</h2>
+        <div class="popular-list">
+            <div class="formation-item" *ngFor="let f of formationsPopulaires">
+                <img [src]="f.image || '/assets/default.jpg'" alt="formation" />
+                <div>
+                    <h4>{{ f.titre }}</h4>
+                    <p>{{ f.description || 'Aucune description' }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

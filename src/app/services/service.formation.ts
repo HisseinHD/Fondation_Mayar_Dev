@@ -21,43 +21,43 @@ export interface Formation {
   providedIn: 'root',
 })
 export class FormationService {
-  private apiUrl = `${environment.apiUrl}/formations`; // ← dynamique selon environment
+  private apiUrl = `${environment.apiUrl}/formations`;
 
   constructor(private http: HttpClient) {}
 
-  // 🔐 Fonction utilitaire pour ajouter le header d’auth
+  // 🔐 Headers avec token pour authentification
   private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token'); // récupère le token depuis le login
+    const token = localStorage.getItem('token');
     return new HttpHeaders({
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token || ''}`,
     });
   }
 
   // ➕ Ajouter une formation
-  addFormation(data: FormData): Observable<any> {
+  addFormation(data: FormData): Observable<Formation> {
     const headers = this.getAuthHeaders();
-    return this.http.post(`${this.apiUrl}/add`, data, { headers });
+    return this.http.post<Formation>(`${this.apiUrl}/add`, data, { headers });
   }
 
-  // 📄 Récupérer les formations (avec pagination)
-  getFormations(page: number = 1): Observable<any> {
-    return this.http.get(`${this.apiUrl}?page=${page}`);
+  // 📄 Récupérer toutes les formations (avec pagination optionnelle)
+  getFormations(page: number = 1): Observable<{ formations: Formation[] }> {
+    return this.http.get<{ formations: Formation[] }>(`${this.apiUrl}?page=${page}`);
   }
 
-  // 📄 Récupérer une formation par id
+  // 📄 Récupérer une formation par ID
   getFormation(id: string): Observable<Formation> {
     return this.http.get<Formation>(`${this.apiUrl}/${id}`);
   }
 
   // ❌ Supprimer une formation
-  deleteFormation(id: string): Observable<any> {
+  deleteFormation(id: string): Observable<{ message: string }> {
     const headers = this.getAuthHeaders();
-    return this.http.delete(`${this.apiUrl}/${id}`, { headers });
+    return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`, { headers });
   }
 
   // ✏️ Mettre à jour une formation
-  updateFormation(id: string, data: FormData): Observable<any> {
+  updateFormation(id: string, data: FormData): Observable<Formation> {
     const headers = this.getAuthHeaders();
-    return this.http.put(`${this.apiUrl}/${id}`, data, { headers });
+    return this.http.put<Formation>(`${this.apiUrl}/${id}`, data, { headers });
   }
 }
