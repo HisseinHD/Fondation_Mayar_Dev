@@ -1,19 +1,54 @@
 <div class="actualite-container">
     <h2>📰 Liste des Actualités</h2>
 
-    <div *ngIf="loading" class="loading">Chargement des actualités...</div>
-    <div *ngIf="error" class="error">{{ error }}</div>
+    <div *ngIf="loading" class="loading">Chargement...</div>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+    <div *ngIf="!loading && actualites.length === 0" class="empty">Aucune actualité trouvée.</div>
 
-    <div *ngIf="!loading && actualites.length === 0" class="empty">
-        Aucune actualité disponible.
+    <!-- Barre d'action admin -->
+    <div *ngIf="isConnected" class="admin-toolbar">
+        <input type="text" placeholder="Rechercher une actualité..." [(ngModel)]="searchTerm"
+            (input)="filtrerActualites()" class="search-input" />
+        <button class="btn-ajouter" (click)="ajouterActualite()">+ Ajouter une actualité</button>
     </div>
 
-    <div class="grid" *ngIf="actualites.length > 0">
+    <!-- Tableau si utilisateur connecté -->
+    <div *ngIf="isConnected && filteredActualites.length > 0" class="admin-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let act of filteredActualites">
+                    <td>{{ act.titre }}</td>
+                    <td>{{ act.description || (act.contenu | slice: 0: 50) }}...</td>
+                    <td>{{ act.createdAt | date: 'short' }}</td>
+                    <td>
+                        <img *ngIf="act.image" [src]="'http://localhost:3000' + act.image" width="50" />
+                    </td>
+                    <td>
+                        <button class="btn-modifier" (click)="modifierActualite(act._id)">Modifier</button>
+                        <button class="btn-supprimer" (click)="supprimerActualite(act._id)">Supprimer</button>
+                        <button class="btn-voir" (click)="openActualiteDetail(act._id)">Voir</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Cartes si visiteur -->
+    <div *ngIf="!isConnected && actualites.length > 0" class="grid">
         <div class="card" *ngFor="let act of actualites">
             <img *ngIf="act.image" [src]="'http://localhost:3000' + act.image" alt="{{ act.titre }}" />
             <div class="content">
                 <h3>{{ act.titre }}</h3>
-                <p>{{ act.description || act.contenu | slice:0:100 }}...</p>
+                <p>{{ act.description || (act.contenu | slice: 0: 100) }}...</p>
                 <small>🕒 {{ act.createdAt | date: 'medium' }}</small>
             </div>
         </div>

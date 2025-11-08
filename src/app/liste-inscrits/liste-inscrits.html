@@ -2,14 +2,14 @@
     <h2>Liste des inscrits</h2>
 
     <div *ngIf="loading" class="loading">
-        <i class="fas fa-spinner"></i> Chargement...
+        <i class="fas fa-spinner fa-spin"></i> Chargement...
     </div>
 
     <div *ngIf="errorMessage" class="error">
         <i class="fas fa-exclamation-triangle"></i> {{ errorMessage }}
     </div>
 
-    <table *ngIf="!loading && candidats.length > 0">
+    <table *ngIf="!loading && candidats.length > 0" class="table">
         <thead>
             <tr>
                 <th>Nom</th>
@@ -29,7 +29,8 @@
                 <td data-label="Email">{{ c.email }}</td>
                 <td data-label="Téléphone">{{ c.tel }}</td>
                 <td data-label="Niveau">{{ c.niveau || 'Non spécifié' }}</td>
-                <td data-label="Date inscription">{{ c.dateInscription | date:'short' }}</td>
+                <td data-label="Date">{{ c.dateInscription | date:'short' }}</td>
+
                 <td data-label="Action">
                     <div class="action-buttons">
                         <button (click)="modifierStatut(c, 'validé')" class="btn-valider">Valider</button>
@@ -37,6 +38,7 @@
                         <button (click)="supprimerCandidat(c._id)" class="btn-supprimer">Supprimer</button>
                     </div>
                 </td>
+
                 <td data-label="Status">
                     <select [(ngModel)]="c.statut" (change)="modifierStatut(c, c.statut!)"
                         [class]="'statut-select statut-' + c.statut">

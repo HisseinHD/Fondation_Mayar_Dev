@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormationService, Formation } from '../../services/service.formation';
 
-// Modèle pour la vue composant
 interface FormationModel {
   _id?: string;
   titre: string;
@@ -11,8 +10,8 @@ interface FormationModel {
   prix?: number;
   categorie?: string;
   image?: string;
-  dateDebut?: string; // ISO string
-  dateFin?: string; // ISO string
+  dateDebut?: string;
+  dateFin?: string;
 }
 
 @Component({
@@ -22,23 +21,21 @@ interface FormationModel {
   templateUrl: './formation.html',
   styleUrls: ['./formation.css'],
 })
-export class FormationComponent {
+export class FormationComponent implements OnInit {
   formations: FormationModel[] = [];
   loading = true;
   errorMessage = '';
-  isConnected = false; // 🔹 utilisateur connecté
+  isConnected = false;
 
   constructor(private formationService: FormationService, private router: Router) {}
 
   ngOnInit(): void {
-    // Vérifie si un token existe → utilisateur connecté
     const token = localStorage.getItem('token');
     this.isConnected = !!token;
-
     this.getAllFormations();
   }
 
-  getAllFormations() {
+  getAllFormations(): void {
     this.loading = true;
     this.formationService.getFormations().subscribe({
       next: (response) => {
@@ -50,7 +47,7 @@ export class FormationComponent {
         }));
         this.loading = false;
       },
-      error: (err: any) => {
+      error: (err) => {
         console.error('Erreur lors du chargement des formations:', err);
         this.errorMessage = 'Erreur lors du chargement des formations';
         this.loading = false;
@@ -58,34 +55,33 @@ export class FormationComponent {
     });
   }
 
-  // 🔹 Navigation vers le détail
-  openFormationDetail(id?: string) {
+  openFormationDetail(id?: string): void {
     if (!id) return;
     if (this.isConnected) {
-      // Redirige vers espace admin
       this.router.navigate(['/admin/formation', id]);
     } else {
-      // Redirige vers espace public
       this.router.navigate(['/formation', id]);
     }
   }
-
-  // 🔹 Formulaire d'inscription
-  ouvrirFormulaireInscription(id: string) {
+  ouvrirFormulaireInscription(id?: string): void {
+    if (!id) return; // empêche l'appel si id est manquant
     this.router.navigate(['/inscription', id]);
   }
 
-  // 🔧 Fonctions admin
-  modifierFormation(id?: string) {
+  modifierFormation(id?: string): void {
     if (!id) return;
     this.router.navigate(['/admin/formation/modifier', id]);
   }
 
-  supprimerFormation(id?: string) {
+  supprimerFormation(id?: string): void {
     if (!id || !confirm('Confirmer la suppression de cette formation ?')) return;
     this.formationService.deleteFormation(id).subscribe({
-      next: () => (this.formations = this.formations.filter((f) => f._id !== id)),
-      error: (err: any) => console.error('Erreur suppression formation:', err),
+      next: () => {
+        this.formations = this.formations.filter((f) => f._id !== id);
+      },
+      error: (err) => {
+        console.error('Erreur suppression formation:', err);
+      },
     });
   }
 }

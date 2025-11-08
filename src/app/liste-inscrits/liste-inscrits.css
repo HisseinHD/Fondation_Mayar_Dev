@@ -1,241 +1,186 @@
+/* 🌟 Conteneur principal */
 .liste-inscrits-container {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 2rem auto;
+  overflow-x: auto;
 }
 
+/* 🏷️ Titre principal */
 .liste-inscrits-container h2 {
-  color: #027efa;
   text-align: center;
-  margin-bottom: 30px;
-  font-size: 2rem;
+  color: #0b66c2;
+  font-size: 1.8rem;
   font-weight: 600;
-  position: relative;
-  padding-bottom: 15px;
+  margin-bottom: 1.5rem;
 }
 
-.liste-inscrits-container h2::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 3px;
-  background: #3498db;
-  border-radius: 2px;
-}
-
-/* Styles pour les états de chargement et d'erreur */
-.loading, .error {
-  padding: 20px;
+/* 🔄 Chargement et erreurs */
+.loading,
+.error,
+.no-data {
   text-align: center;
-  border-radius: 8px;
-  margin: 20px 0;
-  font-weight: 500;
-  font-size: 1.1rem;
+  font-size: 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+  margin: 1rem 0;
 }
 
 .loading {
-  background-color: #e3f2fd;
-  color: #1976d2;
-  border: 1px solid #bbdefb;
+  color: #0b66c2;
 }
 
 .error {
-  background-color: #ffebee;
-  color: #c62828;
-  border: 1px solid #ffcdd2;
+  background-color: #ffe5e5;
+  color: #d91f2b;
+  border: 1px solid #f5c2c2;
 }
 
-/* Style du tableau */
-table {
+.no-data {
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* 🧾 Table stylée */
+.table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin: 20px 0;
 }
 
-thead {
-  background: #0070e0;
+.table thead {
+  background: linear-gradient(90deg, #0b66c2, #1085e4);
+  color: #ffffff;
 }
 
-thead th {
-  color: white;
-  padding: 16px 12px;
+.table th,
+.table td {
   text-align: left;
-  font-weight: 600;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  padding: 12px 16px;
+  font-size: 0.95rem;
 }
 
-tbody tr {
-  transition: background-color 0.2s ease;
-  border-bottom: 1px solid #ecf0f1;
+.table tbody tr {
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.2s;
 }
 
-tbody tr:hover {
-  background-color: #f8f9fa;
+.table tbody tr:hover {
+  background-color: #f9fafb;
 }
 
-tbody tr:last-child {
-  border-bottom: none;
-}
-
-tbody td {
-  padding: 14px 12px;
-  color: #2c3e50;
-  font-size: 0.9rem;
-}
-
-/* Style des boutons */
-button {
-  padding: 6px 12px;
-  margin: 2px 4px 2px 0;
-  border: none;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-button:first-child {
-  background-color: #27ae60;
-  color: white;
-}
-
-button:first-child:hover {
-  background-color: #219653;
-}
-
-button:nth-child(2) {
-  background-color: #e74c3c;
-  color: white;
-}
-
-button:nth-child(2):hover {
-  background-color: #d63031;
-}
-
-button:last-child {
-  background-color: #7f8c8d;
-  color: white;
-}
-
-button:last-child:hover {
-  background-color: #636e72;
-}
-
-/* Style du select */
-select {
-  padding: 6px 10px;
-  border: 1px solid #bdc3c7;
-  border-radius: 4px;
-  background-color: white;
-  color: #2c3e50;
-  font-size: 0.85rem;
-  cursor: pointer;
-  min-width: 110px;
-}
-
-select:focus {
-  outline: none;
-  border-color: #3498db;
-}
-
-/* Style pour le message "Aucun inscrit" */
-p {
-  text-align: center;
-  color: #7f8c8d;
-  font-size: 1.1rem;
-  padding: 40px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  margin: 20px 0;
-  border: 1px dashed #bdc3c7;
-}
-
-/* Responsive */
+/* 📱 Responsive */
 @media (max-width: 768px) {
-  .liste-inscrits-container {
-    padding: 10px;
-  }
-  
-  .liste-inscrits-container h2 {
-    font-size: 1.5rem;
-  }
-  
-  table {
-    font-size: 0.8rem;
-    box-shadow: none;
-    border: 1px solid #ddd;
-  }
-  
-  thead {
+  .table thead {
     display: none;
   }
-  
-  tbody tr {
+
+  .table tr {
     display: block;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 10px;
+    margin-bottom: 1rem;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
   }
-  
-  tbody td {
-    display: block;
-    padding: 8px 10px;
+
+  .table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
     border-bottom: 1px solid #eee;
-    text-align: right;
   }
-  
-  tbody td:last-child {
+
+  .table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #0b66c2;
+  }
+
+  .table td:last-child {
     border-bottom: none;
   }
-  
-  tbody td::before {
-    content: attr(data-label);
-    font-weight: bold;
-    color: #2c3e50;
-    float: left;
-  }
-  
-  .action-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-  
-  button {
-    width: 100%;
-    margin: 2px 0;
-  }
-  
-  select {
-    width: 100%;
-  }
 }
 
-/* Animation pour le chargement */
-@keyframes pulse {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 1;
-  }
+/* ⚙️ Boutons d’action */
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.loading {
-  animation: pulse 1.5s ease-in-out infinite;
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  color: #fff;
+}
+
+.btn-valider {
+  background-color: #10b981;
+}
+
+.btn-valider:hover {
+  background-color: #059669;
+}
+
+.btn-refuser {
+  background-color: #ef4444;
+}
+
+.btn-refuser:hover {
+  background-color: #dc2626;
+}
+
+.btn-supprimer {
+  background-color: #f59e0b;
+}
+
+.btn-supprimer:hover {
+  background-color: #d97706;
+}
+
+/* ✅ Statut */
+.statut-select {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.statut-validé {
+  background-color: #d1fae5;
+  color: #065f46;
+  border-color: #10b981;
+}
+
+.statut-refusé {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border-color: #ef4444;
+}
+
+.statut-en\ attente {
+  background-color: #fef9c3;
+  color: #92400e;
+  border-color: #f59e0b;
+}
+
+/* 🌈 Scroll personnalisé */
+.liste-inscrits-container::-webkit-scrollbar {
+  height: 8px;
+}
+.liste-inscrits-container::-webkit-scrollbar-thumb {
+  background: #0b66c2;
+  border-radius: 10px;
 }
