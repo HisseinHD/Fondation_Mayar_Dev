@@ -176,7 +176,7 @@ button {
   border-color: #f59e0b;
 }
 
-/* 🌈 Scroll personnalisé */
+/* Scroll personnalisé */
 .liste-inscrits-container::-webkit-scrollbar {
   height: 8px;
 }

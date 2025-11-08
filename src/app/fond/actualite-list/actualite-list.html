@@ -29,9 +29,12 @@
                     <td>{{ act.titre }}</td>
                     <td>{{ act.description || (act.contenu | slice: 0: 50) }}...</td>
                     <td>{{ act.createdAt | date: 'short' }}</td>
+                    <!-- Tableau admin -->
                     <td>
-                        <img *ngIf="act.image" [src]="'http://localhost:3000' + act.image" width="50" />
+                        <img *ngIf="act.image" [src]="act.image" width="50" />
                     </td>
+                    
+
                     <td>
                         <button class="btn-modifier" (click)="modifierActualite(act._id)">Modifier</button>
                         <button class="btn-supprimer" (click)="supprimerActualite(act._id)">Supprimer</button>
@@ -45,8 +48,8 @@
     <!-- Cartes si visiteur -->
     <div *ngIf="!isConnected && actualites.length > 0" class="grid">
         <div class="card" *ngFor="let act of actualites">
-            <img *ngIf="act.image" [src]="'http://localhost:3000' + act.image" alt="{{ act.titre }}" />
-            <div class="content">
+<!-- Cartes visiteur -->
+<img *ngIf="act.image" [src]="act.image" alt="{{ act.titre }}" />            <div class="content">
                 <h3>{{ act.titre }}</h3>
                 <p>{{ act.description || (act.contenu | slice: 0: 100) }}...</p>
                 <small>🕒 {{ act.createdAt | date: 'medium' }}</small>

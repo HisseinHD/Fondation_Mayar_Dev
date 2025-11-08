@@ -35,7 +35,8 @@
                     <div class="action-buttons">
                         <button (click)="modifierStatut(c, 'validé')" class="btn-valider">Valider</button>
                         <button (click)="modifierStatut(c, 'refusé')" class="btn-refuser">Refuser</button>
-                        <button (click)="supprimerCandidat(c._id)" class="btn-supprimer">Supprimer</button>
+                        <!-- CORRECTION : Passer l'objet candidat complet -->
+                        <button (click)="supprimerCandidat(c)" class="btn-supprimer">Supprimer</button>
                     </div>
                 </td>
 

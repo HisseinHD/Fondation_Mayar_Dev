@@ -27,8 +27,9 @@
                 <td>{{ f.dateDebut | date:'dd/MM/yyyy' }}</td>
                 <td>{{ f.dateFin | date:'dd/MM/yyyy' }}</td>
                 <td>
-                    <img [src]="'http://localhost:3000' + f.image" alt="{{ f.titre }}" width="60" />
+                    <img *ngIf="f.image" [src]="f.image" alt="{{ f.titre }}" width="60" />
                 </td>
+
                 <td class="actions">
                     <button class="btn-modifier" (click)="modifierFormation(f._id)">Modifier</button>
                     <button class="btn-supprimer" (click)="supprimerFormation(f._id)">Supprimer</button>
@@ -41,7 +42,7 @@
     <!-- Cartes pour visiteurs non connectés -->
     <div *ngIf="!isConnected && !loading && formations.length" class="grid">
         <div *ngFor="let f of formations" class="card">
-            <img [src]="'http://localhost:3000' + f.image" alt="{{ f.titre }}" />
+            <img *ngIf="f.image" [src]="f.image" alt="{{ f.titre }}" />
             <h3>{{ f.titre }}</h3>
             <p>{{ f.description || 'Pas de description disponible' }}</p>
             <p><strong>Prix :</strong> {{ f.prix }} FCFA</p>
