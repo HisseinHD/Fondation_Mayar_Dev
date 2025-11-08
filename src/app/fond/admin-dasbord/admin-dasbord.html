@@ -21,12 +21,12 @@
     <div class="charts-grid">
         <div class="chart-card">
             <h3>Évolution des Inscriptions</h3>
-            <canvas id="performanceChart"></canvas>
+            <canvas #performanceChart></canvas>
         </div>
 
         <div class="chart-card">
             <h3>Répartition par catégorie</h3>
-            <canvas id="donationsChart"></canvas>
+            <canvas #donationsChart></canvas>
         </div>
     </div>
 
@@ -35,10 +35,10 @@
         <h2>Formations populaires</h2>
         <div class="popular-list">
             <div class="formation-item" *ngFor="let f of formationsPopulaires">
-                <img [src]="f.image || '/assets/default.jpg'" alt="formation" />
+                <img [src]="f.image ? f.image : '/assets/default.jpg'" alt="{{ f.titre }}" />
                 <div>
                     <h4>{{ f.titre }}</h4>
-                    <p>{{ f.description || 'Aucune description' }}</p>
+                    <p>Inscriptions: {{ f.inscriptions || 0 }}</p>
                 </div>
             </div>
         </div>

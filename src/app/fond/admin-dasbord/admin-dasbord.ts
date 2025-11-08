@@ -1,5 +1,5 @@
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Chart } from 'chart.js/auto';
 import { environment } from '../../../environments/environment';
@@ -12,51 +12,59 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./admin-dasbord.css'],
 })
 export class AdminDasbord implements OnInit {
+  @ViewChild('performanceChart') performanceChartRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('donationsChart') donationsChartRef!: ElementRef<HTMLCanvasElement>;
+
   totalFormations = 0;
   totalCandidats = 0;
   formationsActives = 0;
   formationsPopulaires: any[] = [];
+  inscriptionsParFormation: any[] = [];
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.loadStats();
-    this.initializeCharts();
+    this.loadDashboard();
   }
 
-  loadStats(): void {
+  loadDashboard(): void {
     const baseUrl = environment.apiUrl;
+    const token = localStorage.getItem('token');
 
-    this.http.get<any>(`${baseUrl}/formations`).subscribe({
-      next: (formations) => {
-        const list = formations.formations || formations;
-        this.totalFormations = Array.isArray(list) ? list.length : 0;
-        this.formationsActives = Array.isArray(list) ? list.filter((f: any) => f.active).length : 0;
-        this.formationsPopulaires = Array.isArray(list) ? list.slice(0, 3) : [];
-      },
-      error: (err) => console.error('Erreur chargement formations', err),
-    });
+    this.http
+      .get<any>(`${baseUrl}/dashboard`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .subscribe({
+        next: (res) => {
+          this.totalFormations = res.totalFormations;
+          this.formationsActives = res.formationsActives;
+          this.totalCandidats = res.totalCandidats;
+          this.formationsPopulaires = res.formationsPopulaires;
+          this.inscriptionsParFormation = res.inscriptionsParFormation;
 
-    this.http.get<any>(`${baseUrl}/inscription/candidats`).subscribe({
-      next: (candidats) => (this.totalCandidats = Array.isArray(candidats) ? candidats.length : 0),
-      error: (err) => console.error('Erreur chargement candidats', err),
-    });
+          this.initializeCharts();
+        },
+        error: (err) => console.error('Erreur chargement dashboard', err),
+      });
   }
 
   initializeCharts(): void {
-    const perfCanvas = document.getElementById('performanceChart') as HTMLCanvasElement;
-    if (perfCanvas) {
-      new Chart(perfCanvas, {
+    // Graphique Évolution des Inscriptions
+    if (this.performanceChartRef) {
+      const labels = this.inscriptionsParFormation.map((f) => f.titre);
+      const data = this.inscriptionsParFormation.map((f) => f.inscriptions);
+
+      new Chart(this.performanceChartRef.nativeElement, {
         type: 'line',
         data: {
-          labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+          labels,
           datasets: [
             {
               label: 'Inscriptions',
-              data: [12, 19, 8, 15, 22, 30, 18],
+              data,
               borderColor: '#2563eb',
               backgroundColor: 'rgba(37,99,235,0.1)',
-              borderWidth: 2,
               fill: true,
               tension: 0.4,
             },
@@ -65,7 +73,6 @@ export class AdminDasbord implements OnInit {
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
           scales: {
             y: { beginAtZero: true, grid: { color: '#eee' } },
             x: { grid: { display: false } },
@@ -74,9 +81,9 @@ export class AdminDasbord implements OnInit {
       });
     }
 
-    const donationsCanvas = document.getElementById('donationsChart') as HTMLCanvasElement;
-    if (donationsCanvas) {
-      new Chart(donationsCanvas, {
+    // Graphique Répartition par Catégorie (exemple statique)
+    if (this.donationsChartRef) {
+      new Chart(this.donationsChartRef.nativeElement, {
         type: 'doughnut',
         data: {
           labels: ['Éducation', 'Santé', 'Entrepreneuriat', 'Humanitaire'],
@@ -84,7 +91,6 @@ export class AdminDasbord implements OnInit {
             {
               data: [40, 25, 20, 15],
               backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'],
-              borderWidth: 0,
             },
           ],
         },
