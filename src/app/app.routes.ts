@@ -12,6 +12,7 @@ import { FormationDetailComponent } from './fond/formation-detail/formation-deta
 import { InscriptionComponent } from './inscription/inscription';
 import { ListeInscritsComponent } from './liste-inscrits/liste-inscrits';
 import { GestionCandidatsComponent } from './gestion-candidats/gestion-candidats';
+import { AproposComponent } from './apropos/apropos';
 
 export const routes: Routes = [
   {
@@ -24,6 +25,7 @@ export const routes: Routes = [
       { path: 'actualites', component: ActualiteListComponent },
       { path: 'inscription/:id', component: InscriptionComponent },
       { path: 'liste-inscrits/:id', component: ListeInscritsComponent },
+      { path: 'apropos', component: AproposComponent },
     ],
   },
   {

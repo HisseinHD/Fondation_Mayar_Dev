@@ -1,18 +1,30 @@
+<!-- ===== SECTION BIENVENUE ===== -->
+<section class="welcome-section">
+    <div class="welcome-content">
+        <h1>Bienvenue à la Fondation <span>Mayar</span></h1>
+        <p class="intro">
+            Ensemble, nous œuvrons pour l’éducation, la solidarité et le développement durable.
+        </p>
 
-
-    <!-- ===== HERO ===== -->
-    <section class="hero" role="banner">
-        <article class="card intro">
-            <h2>Présentation du projet</h2>
-
-
-            <div class="actions">
-                <div class="action">Dernières actualités</div>
-                <div class="action secondary">Nos actions</div>
-                <div class="action">S'inscrire</div>
-                <div class="action">Dernières actualités</div>
-
+        <div class="missions">
+            <div class="mission">
+                <i class="fas fa-graduation-cap"></i>
+                <h3>Éduquer</h3>
             </div>
+            <div class="mission">
+                <i class="fas fa-hand-holding-heart"></i>
+                <h3>Soutenir</h3>
+            </div>
+            <div class="mission">
+                <i class="fas fa-leaf"></i>
+                <h3>Construire</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+             
+       
 
             <div class="panel">
                 <h4>Public cible</h4>
@@ -78,116 +90,191 @@
                     
                 </div>
                 <app-formation></app-formation>
+                            <app-actualite-list></app-actualite-list>
+
             </div>
-        </article>
+ 
 
-        <aside class="right-panel" aria-label="Informations complémentaires">
-            <app-actualite-list></app-actualite-list>
+       
+<!-- ===== HERO ===== -->
+<!-- ... (le reste du code reste inchangé jusqu'aux sections à modifier) ... -->
 
-            <!-- contact.component.html -->
-            <div class="card contact-info">
-                <h4>Contact rapide</h4>
+<!-- ===== PANELS ===== -->
+<section class="grid">
+    <article class="panel">
+        <h4>Apropos de Nous</h4>
+        <ul class="news-list" id="news">
+            <!-- les news seront injectées par JS -->
+            <app-apropos></app-apropos>
+        </ul>
+    </article>
 
-                <!-- Messages d'alerte -->
-                <div *ngIf="messageSent" class="alert alert-success" role="alert">
-                    Votre message a été envoyé avec succès !
+    <article class="panel actions">
+        <h4>Nos actions</h4>
+        <div class="actions-list">
+            <div class="action-item">
+                <img src="assets/actions/form1.png" alt="Formation professionnelle">
+                <div class="action-info">
+                    <h5>Formation en développement web</h5>
+                    <p class="date">10 octobre 2025</p>
+                    <p>Session intensive pour jeunes diplômés axée sur les compétences pratiques et l'emploi.</p>
                 </div>
-
-                <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
-                    {{ errorMessage }}
-                </div>
-
-                <form class="contact-form" [formGroup]="contactForm" (ngSubmit)="onSubmit()">
-                    <!-- Champ Nom -->
-                    <div class="form-group">
-                        <input type="text" name="nom" placeholder="Votre nom" formControlName="name"
-                            [class.is-invalid]="name?.invalid && name?.touched" required>
-                        <div *ngIf="name?.invalid && name?.touched" class="invalid-feedback">
-                            <div *ngIf="name?.errors?.['required']">Le nom est requis</div>
-                            <div *ngIf="name?.errors?.['minlength']">Le nom doit contenir au moins 2 caractères</div>
-                        </div>
-                    </div>
-
-                    <!-- Champ Email -->
-                    <div class="form-group">
-                        <input type="email" name="email" placeholder="Votre email" formControlName="email"
-                            [class.is-invalid]="email?.invalid && email?.touched" required>
-                        <div *ngIf="email?.invalid && email?.touched" class="invalid-feedback">
-                            <div *ngIf="email?.errors?.['required']">L'email est requis</div>
-                            <div *ngIf="email?.errors?.['email']">Veuillez entrer un email valide</div>
-                        </div>
-                    </div>
-
-                    <!-- Champ Message -->
-                    <div class="form-group">
-                        <textarea name="message" rows="3" placeholder="Votre message" formControlName="message"
-                            [class.is-invalid]="message?.invalid && message?.touched" required></textarea>
-                        <div *ngIf="message?.invalid && message?.touched" class="invalid-feedback">
-                            <div *ngIf="message?.errors?.['required']">Le message est requis</div>
-                            <div *ngIf="message?.errors?.['minlength']">Le message doit contenir au moins 10 caractères
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Bouton d'envoi -->
-                    <button type="submit" class="btn primary" [disabled]="isLoading || contactForm.invalid">
-                        <span *ngIf="!isLoading">Envoyer</span>
-                        <span *ngIf="isLoading">Envoi en cours...</span>
-                    </button>
-                </form>
             </div>
-        </aside>
-    </section>
 
-    <!-- ===== PANELS ===== -->
-    <section class="grid">
-        <article class="panel">
-            <h4>Actualités</h4>
-            <ul class="news-list" id="news">
-                <!-- les news seront injectées par JS -->
-            </ul>
-        </article>
-<article class="panel actions">
-    <h4>Nos actions</h4>
-    <div class="actions-list">
-        <div class="action-item">
-            <img src="assets/actions/form1.png" alt="Formation professionnelle">
-            <div class="action-info">
-                <h5>Formation en développement web</h5>
-                <p class="date">10 octobre 2025</p>
-                <p>Session intensive pour jeunes diplômés axée sur les compétences pratiques et l’emploi.</p>
+            <div class="action-item">
+                <img src="assets/actions/form2.jpg" alt="Atelier de leadership">
+                <div class="action-info">
+                    <h5>Atelier sur le leadership</h5>
+                    <p class="date">15 septembre 2025</p>
+                    <p>Programme d'accompagnement destiné aux femmes entrepreneures pour renforcer la prise
+                        d'initiative.</p>
+                </div>
+            </div>
+
+            <div class="action-item">
+                <img src="assets/actions/form3.png" alt="Projet communautaire">
+                <div class="action-info">
+                    <h5>Projet communautaire</h5>
+                    <p class="date">5 août 2025</p>
+                    <p>Action solidaire menée dans les quartiers défavorisés pour promouvoir la formation et la
+                        solidarité.</p>
+                </div>
             </div>
         </div>
+    </article>
 
-        <div class="action-item">
-            <img src="assets/actions/form2.jpg" alt="Atelier de leadership">
-            <div class="action-info">
-                <h5>Atelier sur le leadership</h5>
-                <p class="date">15 septembre 2025</p>
-                <p>Programme d’accompagnement destiné aux femmes entrepreneures pour renforcer la prise d’initiative.
-                </p>
+    <article class="panel" id="partenaires">
+        <h4>Partenaires</h4>
+        <p>Liste des partenaires et modalités.</p>
+    </article>
+
+    <!-- NOUVELLE SECTION: Notre Vision -->
+    <div class="panel vision-panel">
+        <h4>Notre Vision Profonde</h4>
+        <div class="vision-content">
+            <div class="vision-item">
+                <div class="vision-icon">
+                    <i class="fas fa-seedling"></i>
+                </div>
+                <div class="vision-text">
+                    <h5>Transformation Sociale</h5>
+                    <p>Nous croyons en un monde où chaque individu peut réaliser son potentiel, indépendamment de son
+                        origine sociale ou économique.</p>
+                </div>
             </div>
-        </div>
-
-        <div class="action-item">
-            <img src="assets/actions/form3.png" alt="Projet communautaire">
-            <div class="action-info">
-                <h5>Projet communautaire</h5>
-                <p class="date">5 août 2025</p>
-                <p>Action solidaire menée dans les quartiers défavorisés pour promouvoir la formation et la solidarité.
-                </p>
+            <div class="vision-item">
+                <div class="vision-icon">
+                    <i class="fas fa-hands-helping"></i>
+                </div>
+                <div class="vision-text">
+                    <h5>Autonomisation Collective</h5>
+                    <p>Notre approche privilégie le développement de compétences durables plutôt que l'assistance
+                        temporaire.</p>
+                </div>
+            </div>
+            <div class="vision-item">
+                <div class="vision-icon">
+                    <i class="fas fa-infinity"></i>
+                </div>
+                <div class="vision-text">
+                    <h5>Impact Pérenne</h5>
+                    <p>Nous mesurons notre succès par la capacité des communautés à poursuivre leur développement de
+                        façon autonome.</p>
+                </div>
             </div>
         </div>
     </div>
-</article>
 
-        <article class="panel" id="partenaires">
-            <h4>Partenaires</h4>
-            <p>Liste des partenaires et modalités.</p>
-        </article>
-
-        <div class="panel">
-
+    <!-- NOUVELLE SECTION: Nos Valeurs Fondamentales -->
+    <div class="panel values-panel">
+        <h4>Nos Valeurs Fondamentales</h4>
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h5>Solidarité Authentique</h5>
+                <p>Nous créons des liens durables basés sur l'écoute active et l'accompagnement personnalisé.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <h5>Équité Radicale</h5>
+                <p>Nous défions les structures qui perpétuent les inégalités et travaillons pour un accès équitable aux
+                    opportunités.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h5>Transparence Totale</h5>
+                <p>Nous rendons compte de chaque action, chaque dépense et chaque résultat à nos bénéficiaires et
+                    donateurs.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h5>Durabilité Intégrale</h5>
+                <p>Nos programmes sont conçus pour avoir un impact à long terme, respectueux des personnes et de la
+                    planète.</p>
+            </div>
         </div>
-    </section>
-   
+    </div>
+
+    <!-- SECTION CONTACT (gardée mais unique) -->
+    <div class="panel">
+        <div class="card contact-info">
+            <h4>Contact Rapide</h4>
+
+            <!-- Messages d'alerte -->
+            <div *ngIf="messageSent" class="alert alert-success" role="alert">
+                Votre message a été envoyé avec succès !
+            </div>
+
+            <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+                {{ errorMessage }}
+            </div>
+
+            <form class="contact-form" [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+                <!-- Champ Nom -->
+                <div class="form-group">
+                    <input type="text" name="nom" placeholder="Votre nom" formControlName="name"
+                        [class.is-invalid]="name?.invalid && name?.touched" required>
+                    <div *ngIf="name?.invalid && name?.touched" class="invalid-feedback">
+                        <div *ngIf="name?.errors?.['required']">Le nom est requis</div>
+                        <div *ngIf="name?.errors?.['minlength']">Le nom doit contenir au moins 2 caractères</div>
+                    </div>
+                </div>
+
+                <!-- Champ Email -->
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Votre email" formControlName="email"
+                        [class.is-invalid]="email?.invalid && email?.touched" required>
+                    <div *ngIf="email?.invalid && email?.touched" class="invalid-feedback">
+                        <div *ngIf="email?.errors?.['required']">L'email est requis</div>
+                        <div *ngIf="email?.errors?.['email']">Veuillez entrer un email valide</div>
+                    </div>
+                </div>
+
+                <!-- Champ Message -->
+                <div class="form-group">
+                    <textarea name="message" rows="3" placeholder="Votre message" formControlName="message"
+                        [class.is-invalid]="message?.invalid && message?.touched" required></textarea>
+                    <div *ngIf="message?.invalid && message?.touched" class="invalid-feedback">
+                        <div *ngIf="message?.errors?.['required']">Le message est requis</div>
+                        <div *ngIf="message?.errors?.['minlength']">Le message doit contenir au moins 10 caractères
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bouton d'envoi -->
+                <button type="submit" class="btn primary" [disabled]="isLoading || contactForm.invalid">
+                    <span *ngIf="!isLoading">Envoyer</span>
+                    <span *ngIf="isLoading">Envoi en cours...</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</section>

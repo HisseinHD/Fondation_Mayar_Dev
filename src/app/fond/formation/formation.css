@@ -190,3 +190,25 @@
     font-size: 0.8rem;
   }
 }
+.btn-voir-plus,
+.btn-voir-moins {
+  background: none;
+  border: none;
+  color: var(--blue);
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.btn-voir-plus:hover,
+.btn-voir-moins:hover {
+  color: var(--blue-dark);
+}
+
+.admin-table td {
+  max-width: 250px;
+  word-wrap: break-word;
+  white-space: normal;
+  vertical-align: top;
+}

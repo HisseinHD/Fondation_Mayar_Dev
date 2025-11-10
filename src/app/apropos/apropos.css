@@ -1,0 +1,140 @@
+/* 🎯 SECTION PRINCIPALE */
+.apropos-section {
+  background: linear-gradient(135deg, #f9fbfd 0%, #eef3f8 100%);
+  padding: 80px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* 🧱 CONTENEUR CENTRAL */
+.apropos-container {
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  max-width: 900px;
+  padding: 50px;
+  text-align: center;
+  color: #0b2b3a;
+  animation: fadeInUp 0.8s ease-in-out;
+}
+
+/* 🏷️ TITRE */
+.title {
+  font-size: 2.2rem;
+  margin-bottom: 25px;
+  color: #0b66c2;
+  font-weight: 700;
+}
+
+.highlight {
+  color: #ffd100;
+}
+
+/* 📝 TEXTE */
+.intro {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 20px;
+  line-height: 1.8;
+}
+
+.content {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 18px;
+  line-height: 1.7;
+}
+
+/* ✨ CTA BUTTONS */
+.cta {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: 50px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn.primary {
+  background: #0b66c2;
+  color: white;
+  box-shadow: 0 4px 10px rgba(11, 102, 194, 0.3);
+}
+
+.btn.primary:hover {
+  background: #094d8d;
+  transform: translateY(-2px);
+}
+
+.btn.secondary {
+  background: #ffd100;
+  color: #0b2b3a;
+  box-shadow: 0 4px 10px rgba(255, 209, 0, 0.3);
+}
+
+.btn.secondary:hover {
+  background: #f2c400;
+  transform: translateY(-2px);
+}
+
+/* 🖼️ IMAGE */
+.image-section {
+  margin: 40px auto 20px;
+}
+
+.image-section img {
+  width: 100%;
+  max-width: 700px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.4s ease;
+}
+
+.image-section img:hover {
+  transform: scale(1.03);
+}
+
+/* 💬 PHRASE DE CLÔTURE */
+.closing {
+  font-size: 1.2rem;
+  color: #0b66c2;
+  font-weight: 600;
+  margin-top: 25px;
+  letter-spacing: 0.5px;
+}
+
+/* ✨ Animation douce */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .apropos-container {
+    padding: 30px 20px;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .cta {
+    flex-direction: column;
+  }
+}

@@ -7,6 +7,7 @@ import { Accueil, ContactForm, Formation } from '../../services/accueil';
 import { RouterLink } from '@angular/router';
 import { FormationComponent } from '../formation/formation';
 import { ActualiteListComponent } from '../actualite-list/actualite-list';
+import { AproposComponent } from '../../apropos/apropos';
 
 
 
@@ -19,6 +20,7 @@ import { ActualiteListComponent } from '../actualite-list/actualite-list';
     HttpClientModule,
     FormationComponent,
     ActualiteListComponent,
+    AproposComponent
   ],
   templateUrl: './accuiel.html',
   styleUrls: ['./accuiel.css'],

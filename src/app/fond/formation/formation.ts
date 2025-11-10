@@ -12,6 +12,7 @@ interface FormationModel {
   image?: string;
   dateDebut?: string;
   dateFin?: string;
+  showFullDescription?: boolean; // ✅ ajout de cette ligne
 }
 
 @Component({
