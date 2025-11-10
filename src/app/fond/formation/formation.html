@@ -1,55 +1,92 @@
-<table *ngIf="isConnected && !loading && formations.length" class="admin-table">
-    <thead>
-        <tr>
-            <th>Titre</th>
-            <th>Description</th>
-            <th>Prix</th>
-            <th>Catégorie</th>
-            <th>Date début</th>
-            <th>Date fin</th>
-            <th>Image</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
+<div class="formations-container">
+    <h2>Nos Formations</h2>
 
-    <tbody>
-        <tr *ngFor="let f of formations">
-            <td>{{ f.titre }}</td>
+    <div *ngIf="loading" class="loading">Chargement...</div>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
-            <!-- Description tronquée -->
-            <td>
-                <span *ngIf="!f.showFullDescription">
-                    {{ f.description?.slice(0, 80) || 'Pas de description' }}
-                    <span *ngIf="f.description && f.description.length > 80">...</span>
-                    <button class="btn-voir-plus" *ngIf="f.description && f.description.length > 80"
-                        (click)="f.showFullDescription = true">
-                        Voir plus
-                    </button>
-                </span>
-            
-                <span *ngIf="f.showFullDescription">
-                    {{ f.description }}
-                    <button class="btn-voir-moins" (click)="f.showFullDescription = false">
-                        Voir moins
-                    </button>
-                </span>
-            </td>
+    <!-- ✅ Tableau pour ADMIN connecté -->
+    <table *ngIf="isConnected && !loading && formations.length" class="admin-table">
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Prix</th>
+                <th>Catégorie</th>
+                <th>Date début</th>
+                <th>Date fin</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
 
+        <tbody>
+            <tr *ngFor="let f of formations">
+                <td>{{ f.titre }}</td>
 
-            <td>{{ f.prix }} FCFA</td>
-            <td>{{ f.categorie || 'Non spécifiée' }}</td>
-            <td>{{ f.dateDebut | date:'dd/MM/yyyy' }}</td>
-            <td>{{ f.dateFin | date:'dd/MM/yyyy' }}</td>
+                <!-- ✅ Description tronquée avec vérification complète -->
+                <td>
+                    <ng-container *ngIf="!f.showFullDescription">
+                        {{ f.description ? f.description.slice(0, 80) : 'Pas de description' }}
+                        <span *ngIf="f.description && f.description.length > 80">...</span>
 
-            <td>
-                <img *ngIf="f.image" [src]="f.image" alt="{{ f.titre }}" width="60" />
-            </td>
+                        <button class="btn-voir-plus" *ngIf="f.description && f.description.length > 80"
+                            (click)="f.showFullDescription = true">
+                            Voir plus
+                        </button>
+                    </ng-container>
 
-            <td class="actions">
-                <button class="btn-modifier" (click)="modifierFormation(f._id)">Modifier</button>
-                <button class="btn-supprimer" (click)="supprimerFormation(f._id)">Supprimer</button>
-                <button class="btn-voir" (click)="openFormationDetail(f._id)">Voir</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+                    <ng-container *ngIf="f.showFullDescription">
+                        {{ f.description }}
+                        <button class="btn-voir-moins" (click)="f.showFullDescription = false">
+                            Voir moins
+                        </button>
+                    </ng-container>
+                </td>
+
+                <td>{{ f.prix }} FCFA</td>
+                <td>{{ f.categorie || 'Non spécifiée' }}</td>
+                <td>{{ f.dateDebut | date:'dd/MM/yyyy' }}</td>
+                <td>{{ f.dateFin | date:'dd/MM/yyyy' }}</td>
+
+                <td>
+                    <img *ngIf="f.image" [src]="f.image" alt="{{ f.titre }}" width="60" />
+                </td>
+
+                <td class="actions">
+                    <button class="btn-modifier" (click)="modifierFormation(f._id)">Modifier</button>
+                    <button class="btn-supprimer" (click)="supprimerFormation(f._id)">Supprimer</button>
+                    <button class="btn-voir" (click)="openFormationDetail(f._id)">Voir</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ✅ Cartes simples pour VISITEURS non connectés -->
+    <div *ngIf="!isConnected && !loading && formations.length" class="grid">
+        <div *ngFor="let f of formations" class="card">
+            <img *ngIf="f.image" [src]="f.image" alt="{{ f.titre }}" />
+            <h3>{{ f.titre }}</h3>
+            <p>
+                {{ f.description ? f.description.slice(0, 100) : 'Pas de description disponible' }}
+                <span *ngIf="f.description && f.description.length > 100">...</span>
+            </p>
+
+            <p><strong>Prix :</strong> {{ f.prix }} FCFA</p>
+            <p><strong>Catégorie :</strong> {{ f.categorie || 'Non spécifiée' }}</p>
+
+            <p *ngIf="f.dateDebut"><strong>Date de début :</strong> {{ f.dateDebut | date:'dd/MM/yyyy' }}</p>
+            <p *ngIf="f.dateFin"><strong>Date de fin :</strong> {{ f.dateFin | date:'dd/MM/yyyy' }}</p>
+
+            <div class="actions">
+                <button class="btn-inscrire" (click)="ouvrirFormulaireInscription(f._id)">
+                    S’inscrire
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ Message si aucune formation -->
+    <div *ngIf="!loading && !formations.length" class="no-data">
+        Aucune formation disponible.
+    </div>
+</div>
