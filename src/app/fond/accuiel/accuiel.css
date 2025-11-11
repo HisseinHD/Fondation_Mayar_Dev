@@ -943,18 +943,95 @@ footer .socials i {
         align-self: center;
     }
 }
+.panel p {
+  text-align: justify;
+  line-height: 1.7;
+  color: #333;
+  font-size: 15.5px;
+  margin-top: 5px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.public {
+  text-transform: uppercase;
+  color: #0b66c2;
+  margin-bottom: 25px;
+  letter-spacing: 1px;
+}
+
+.objectif-card strong {
+  display: block;
+  color: #0b2b3a;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+/* BOUTONS */
+header.site-header .btn {
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+  text-align: center;
+}
+
+/* 🔘 Boutons d’action */
+.welcome-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 25px;
+}
+
+.btn {
+  text-decoration: none;
+  padding: 12px 25px;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: var(--blue);
+  color: white;
+}
+
+.btn-outline {
+  border: 2px solid var(--blue);
+  color: var(--blue);
+  background: transparent;
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: #0b2b3a;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
 /* 🌿 SECTION BIENVENUE SIMPLE ET PRO */
 .welcome-section {
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  min-height: 75vh;
-  padding: 60px 20px;
+  min-height: 80vh;
+  margin-bottom: -80px; /* remonte la section de 30px */
   background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
   font-family: 'Poppins', sans-serif;
   color: #0b2b3a;
   animation: fadeIn 1.2s ease;
+}
+.public{
+  text-align: center;
+  color: #0b66c2;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  font-weight: 700;
 }
 
 .welcome-content {
@@ -1047,3 +1124,33 @@ footer .socials i {
     font-size: 2rem;
   }
 }
+/* Supprime les espaces verticaux inutiles entre sections */
+section, .panel {
+  margin: 0;
+  padding: 0;
+}
+
+/* Ajoute juste un petit espace contrôlé */
+.panel + .panel,
+section + .panel,
+.panel + section {
+  margin-top: 40px;
+}
+
+/* Pour éviter les espaces blancs du body ou des containers */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Uniformise le rendu interne des panels */
+.panel h4 {
+  margin-top: 0;
+}
+
+/* Si certains éléments ont des paddings internes excessifs */
+.welcome-section,
+.grid {
+  padding: 20px 0;
+}
+

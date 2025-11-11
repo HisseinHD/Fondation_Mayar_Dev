@@ -2,15 +2,11 @@
     <!-- Logo -->
     <div class="logo">
         <img src="assets/cap12.png" alt="Logo Fondation Mayar" width="120">
-        
+
     </div>
-<img src="assets/langue/fr.png" alt="Français" width="32" height="22" [class.active]="currentLang === 'fr'"
-    (click)="setLanguage('fr')">
-<img src="assets/langue/ar.png" alt="العربية" width="32" height="22" [class.active]="currentLang === 'ar'"
-    (click)="setLanguage('ar')">
-    <!-- Brand -->
+
     <div class="brand">
-        
+
         <h1>Fondation Mayar</h1>
         <h4>Pour la Formation et le Développement Professionnel</h4>
         <p>Institution éducative et humanitaire</p>
@@ -21,15 +17,26 @@
 
     <!-- Navigation principale -->
     <nav class="cta">
-        <a class="btn primary" href="#contact" (click)="closeMenu()">Nous contacter</a>
-        <a class="btn alt" href="#partenaires" (click)="closeMenu()">Devenir partenaire</a>
         <a class="btn primary" routerLink="/" (click)="closeMenu()">Accueil</a>
         <a class="btn alt" routerLink="/formation" (click)="closeMenu()">Formations</a>
         <a class="btn primary" routerLink="/actualites" (click)="closeMenu()">Actualités</a>
-        <a class="btn alt" routerLink="/apropos" (click)="closeMenu()">À propos</a>
-       
-    </nav>
+        <a class="btn alt" href="#partenaires" (click)="closeMenu()">Devenir partenaire</a>
 
+        <a class="btn alt" routerLink="/apropos" (click)="closeMenu()">À propos</a>
+        <a class="btn primary" href="#contact" (click)="closeMenu()">Nous contacter</a>
+
+
+    </nav>
+    <!-- Remplacer les images simples par des boutons -->
+    <div class="language-switcher">
+        <button class="language-btn active" (click)="setLanguage('fr')" title="Français">
+            <img src="assets/langue/fr.png" alt="Français">
+        </button>
+        <button class="language-btn" (click)="setLanguage('ar')" title="العربية">
+            <img src="assets/langue/ar.png" alt="العربية">
+        </button>
+    </div>
+    <!-- Brand -->
     <!-- Conteneur outils (admin + langue) -->
     <div class="header-tools">
         <!-- Bouton Admin discret -->
@@ -37,7 +44,7 @@
 
         <!-- Switcher de langue -->
         <div class="language-switcher">
-           
+
         </div>
     </div>
 </header>

@@ -1,4 +1,5 @@
 :root {
+  /* 🎨 Couleurs et styles globaux */
   --blue: #0b66c2;
   --blue-dark: #084b80;
   --red: #d91f2b;
@@ -13,6 +14,7 @@
   --font-main: 'Helvetica Neue', Arial, sans-serif;
 }
 
+/* Réinitialisation de base */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -25,14 +27,14 @@ body {
   color: var(--dark);
 }
 
-/* WRAP */
+/* ===================== WRAPPER ===================== */
 .wrap {
   width: 100%;
-  margin: 0;
-  padding: 70px 12px 60px;
+  margin: 0 auto;
+  padding: 85px 10px 50px;
 }
 
-/* HEADER */
+/* ===================== HEADER ===================== */
 header.site-header {
   display: flex;
   align-items: center;
@@ -47,12 +49,13 @@ header.site-header {
   left: 0;
   width: 100%;
   z-index: 1000;
+  gap: 8px;
 }
 
-/* Logo */
+/* LOGO */
 header.site-header .logo {
-  width: 45px;
-  height: 45px;
+  width: 95px;
+  height: 95px;
   border-radius: 50%;
   border: 2px solid var(--blue);
   overflow: hidden;
@@ -66,22 +69,24 @@ header.site-header .logo img {
   object-fit: cover;
 }
 
-/* Brand */
+/* BRAND */
 header.site-header .brand {
   display: flex;
   flex-direction: column;
   justify-content: center;
   line-height: 1.1;
+  flex: 1;
+  min-width: 120px;
 }
 
 header.site-header .brand h1 {
-  font-size: 1rem;
+  font-size: 2rem;
   color: var(--red);
   font-weight: bold;
 }
 
 header.site-header .brand h4 {
-  font-size: 0.8rem;
+  font-size: 1.8rem;
   color: var(--blue-dark);
 }
 
@@ -90,24 +95,24 @@ header.site-header .brand p {
   color: var(--muted);
 }
 
-/* CTA */
+/* CTA (Navigation) */
 header.site-header .cta {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-direction: row;
-  padding: 0;
 }
 
-/* Buttons */
+/* BOUTONS */
 header.site-header .btn {
   font-size: 0.85rem;
-  padding: 6px 12px;
+  padding: 6px 10px;
   border-radius: 6px;
   text-decoration: none;
   font-weight: 600;
   transition: 0.3s;
   text-align: center;
+  white-space: nowrap;
 }
 
 header.site-header .btn.primary {
@@ -130,7 +135,7 @@ header.site-header .btn.alt:hover {
   color: var(--white);
 }
 
-/* Menu toggle */
+/* BOUTON MENU MOBILE */
 header.site-header .menu-toggle {
   display: none;
   font-size: 1.4rem;
@@ -148,25 +153,25 @@ header.site-header .menu-toggle:hover {
   transform: scale(1.05);
 }
 
-/* Conteneur admin + langue aligné avec le menu */
+/* OUTILS ADMIN + LANGUE */
 .header-tools {
   display: flex;
   align-items: center;
-  gap: 6px;
-  flex-wrap: nowrap; /* toujours sur une ligne */
-  margin-left: 10px; /* espace depuis les autres éléments */
+  gap: 8px;
+  margin-left: 8px;
+  flex-shrink: 0;
 }
 
 .admin-login {
-  font-size: 0.85rem;
-  opacity: 0.6;
+  font-size: 0.8rem;
+  opacity: 0.7;
   text-decoration: none;
   color: var(--white);
   background-color: #444;
   padding: 4px 8px;
   border-radius: 4px;
-  transition: opacity 0.3s, background-color 0.3s;
-  white-space: nowrap; /* empêche de passer à la ligne */
+  transition: 0.3s;
+  white-space: nowrap;
 }
 
 .admin-login:hover {
@@ -174,51 +179,93 @@ header.site-header .menu-toggle:hover {
   background-color: #222;
 }
 
+/* ===================== BOUTONS DE LANGUE COMME DE VRAIS BOUTONS ===================== */
 .language-switcher {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 2px;
+  box-shadow: var(--shadow);
+  border: 1px solid #e5e7eb;
 }
 
-.language-switcher img {
-  width: 22px;
-  height: 14px;
-  border-radius: 2px;
+/* Style pour les boutons de langue */
+.language-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 24px;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  border: 1px solid transparent;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
 }
 
-.language-switcher img.active,
-.language-switcher img:hover {
-  border: 1px solid var(--blue);
-  transform: scale(1.1);
+/* Image du drapeau dans le bouton */
+.language-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 3px;
+  display: block;
 }
 
-/* Responsive mobile */
+/* État actif - langue sélectionnée */
+.language-btn.active {
+  background: var(--blue);
+  transform: scale(1.05);
+  box-shadow: 0 2px 6px rgba(11, 102, 194, 0.3);
+}
+
+.language-btn.active img {
+  border: 2px solid var(--white);
+}
+
+/* Effet hover */
+.language-btn:hover:not(.active) {
+  background: var(--light);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Effat de focus pour l'accessibilité */
+.language-btn:focus {
+  outline: 2px solid var(--blue);
+  outline-offset: 1px;
+}
+
+/* Indicateur visuel pour la langue active */
+.language-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background: var(--gold);
+  border-radius: 50%;
+}
+
+/* ===================== RESPONSIVE MOBILE ===================== */
 @media (max-width: 700px) {
   header.site-header {
     flex-wrap: wrap;
-    justify-content: space-between;
     padding: 6px 10px;
-  }
-
-  header.site-header .logo {
-    width: 40px;
-    height: 40px;
-  }
-
-  header.site-header .brand h1 {
-    font-size: 0.9rem;
-  }
-
-  header.site-header .brand h4,
-  header.site-header .brand p {
-    display: none;
+    gap: 6px;
   }
 
   header.site-header .menu-toggle {
     display: block;
+    order: 3;
+    margin-left: auto;
   }
 
   header.site-header .cta {
@@ -229,9 +276,9 @@ header.site-header .menu-toggle:hover {
     background: rgba(255, 255, 255, 0.97);
     border-radius: 8px;
     flex-direction: column;
-    gap: 8px;
-    padding: 10px 12px;
-    box-shadow: 0 4px 12px rgba(11, 38, 60, 0.1);
+    gap: 6px;
+    padding: 8px 10px;
+    box-shadow: var(--shadow);
     width: 90%;
     max-width: 280px;
     z-index: 2000;
@@ -246,25 +293,48 @@ header.site-header .menu-toggle:hover {
     padding: 8px;
   }
 
+  header.site-header .brand h4,
+  header.site-header .brand p {
+    display: none;
+  }
+
+  header.site-header .brand h1 {
+    font-size: 0.9rem;
+  }
+
   .header-tools {
-    margin-left: 0;
     margin-top: 6px;
     justify-content: flex-end;
     width: 100%;
+    order: 4;
+    margin-left: 0;
+    gap: 6px;
   }
 
   .admin-login {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     padding: 3px 6px;
   }
 
-  .language-switcher img {
-    width: 20px;
-    height: 12px;
+  /* Adaptation des boutons de langue sur mobile */
+  .language-switcher {
+    padding: 1px;
+    gap: 4px;
+  }
+
+  .language-btn {
+    width: 32px;
+    height: 20px;
+  }
+
+  .language-btn.active::after {
+    width: 3px;
+    height: 3px;
+    bottom: -1px;
   }
 }
 
-/* Très petit écran */
+/* ===================== TRÈS PETIT ÉCRAN ===================== */
 @media (max-width: 400px) {
   header.site-header .logo {
     width: 35px;
@@ -285,30 +355,39 @@ header.site-header .menu-toggle:hover {
     right: 2.5%;
     top: 48px;
   }
+
+  .header-tools {
+    gap: 4px;
+  }
+
+  .language-btn {
+    width: 28px;
+    height: 18px;
+  }
 }
 
-/* HERO + GRID */
+/* ===================== CONTENU ===================== */
 .hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 10px;
-  margin-top: 12px;
+  margin-top: 8px;
 }
 
-/* Cartes */
+/* CARTES */
 .panel,
 .formation-card,
 .formation-next {
   background: var(--glass);
   border-radius: var(--radius);
-  padding: 12px;
+  padding: 10px;
   box-shadow: var(--shadow);
   transition: transform 0.3s;
 }
@@ -321,20 +400,20 @@ header.site-header .menu-toggle:hover {
 
 .formation-card {
   display: grid;
-  grid-template-columns: 140px 1fr;
-  gap: 10px;
+  grid-template-columns: 130px 1fr;
+  gap: 8px;
   align-items: center;
 }
 
 .formation-img {
-  width: 100%;
-  max-width: 140px;
-  height: 90px;
+  max-width: 130px;
+  height: 85px;
   object-fit: cover;
   border-radius: 8px;
   border: 2px solid var(--blue);
 }
 
+/* Responsive cartes */
 @media (max-width: 992px) {
   .hero {
     grid-template-columns: 1fr;
@@ -350,10 +429,10 @@ header.site-header .menu-toggle:hover {
   }
 }
 
-/* FOOTER */
+/* ===================== FOOTER ===================== */
 footer {
   font-size: 0.9rem;
-  padding: 8px 10px;
+  padding: 6px 10px;
   background: linear-gradient(90deg, var(--blue), #0667b4);
   color: var(--white);
   display: flex;
@@ -366,16 +445,22 @@ footer {
   z-index: 900;
   border-radius: var(--radius) var(--radius) 0 0;
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
-  height: 45px;
+  height: 40px;
   overflow: hidden;
+}
+
+footer a {
+  color: var(--gold);
+  text-decoration: none;
+  font-weight: 600;
 }
 
 @media (max-width: 700px) {
   footer {
     flex-direction: column;
     height: auto;
-    gap: 4px;
+    gap: 2px;
     text-align: center;
-    padding: 6px 8px;
+    padding: 4px 8px;
   }
 }
