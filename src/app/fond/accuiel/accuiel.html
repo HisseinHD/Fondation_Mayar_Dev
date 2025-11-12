@@ -20,14 +20,17 @@
                 <h3>Construire</h3>
             </div>
         </div>
-<!-- 🔘 Boutons d’action -->
-<div class="welcome-buttons">
-    <a href="#contact" class="btn btn-primary">Nous contacter</a>
-    <a href="#actions" class="btn btn-outline">Découvrir nos actions</a>
-    <a href="#don" class="btn btn-gold">Faire un don</a>
-</div>
+        <!-- 🔘 Boutons d’action -->
+        <div class="welcome-buttons">
+
+
+            <a href="#contact" class="btn btn-primary">Nous contacter</a>
+             <a href="#actions"
+                class="btn btn-outline">Découvrir nos actions</a>
+            <a href="#don" class="btn btn-gold">Faire un don</a>
+        </div>
     </div>
-  
+
 </section>
 
 <!-- ===== PUBLIC CIBLE ===== -->
@@ -163,13 +166,13 @@
 <!-- ===== PANELS ===== -->
 <section class="grid">
     <article class="panel">
-        
+
         <ul class="news-list" id="news">
             <app-apropos></app-apropos>
         </ul>
     </article>
 
-    <article class="panel actions">
+    <article  id="actions" class="panel actions">
         <h4 class="public">Nos actions</h4>
         <div class="actions-list">
             <div class="action-item">
@@ -263,6 +266,7 @@
     </div>
 
     <!-- SECTION CONTACT -->
+    <section id="contact"></section>
     <div class="panel">
         <div class="card contact-info">
             <h4>Contact Rapide</h4>
@@ -292,5 +296,27 @@
                 </button>
             </form>
         </div>
+        <!-- MODALE GLOBALE POUR CONTACT -->
+        <div class="modal" *ngIf="isLoading || messageSent || errorMessage">
+            <div class="modal-content" [ngClass]="{
+              loading: isLoading,
+              success: messageSent,
+              error: errorMessage
+            }">
+                <!-- Spinner -->
+                <div *ngIf="isLoading" class="spinner"></div>
+                <p *ngIf="isLoading">Envoi en cours...</p>
+        
+                <!-- Succès -->
+            <div *ngIf="messageSent" class="alert alert-success">
+                Merci d'avoir contacté la Fondation ! Votre message a été envoyé avec succès.
+            </div>
+
+                <!-- Erreur -->
+                <p *ngIf="errorMessage">{{ errorMessage }}</p>
+            </div>
+        </div>
+
     </div>
+
 </section>

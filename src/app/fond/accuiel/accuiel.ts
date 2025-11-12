@@ -1,15 +1,12 @@
 // accuiel.component.ts
-import { CommonModule } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { Accueil, ContactForm, Formation } from '../../services/accueil';
-import { RouterLink } from '@angular/router';
 import { FormationComponent } from '../formation/formation';
 import { ActualiteListComponent } from '../actualite-list/actualite-list';
 import { AproposComponent } from '../../apropos/apropos';
-
-
 
 @Component({
   selector: 'app-accuiel',
@@ -20,7 +17,7 @@ import { AproposComponent } from '../../apropos/apropos';
     HttpClientModule,
     FormationComponent,
     ActualiteListComponent,
-    AproposComponent
+    AproposComponent,
   ],
   templateUrl: './accuiel.html',
   styleUrls: ['./accuiel.css'],
@@ -36,7 +33,11 @@ export class Accuiel implements OnInit {
   loadingFormations = false;
   errorFormations = '';
 
-  constructor(private fb: FormBuilder, private accueil: Accueil) {
+  constructor(
+    private fb: FormBuilder,
+    private accueil: Accueil,
+    private viewportScroller: ViewportScroller
+  ) {
     this.contactForm = this.createForm();
   }
 
@@ -50,6 +51,10 @@ export class Accuiel implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       message: ['', [Validators.required, Validators.minLength(10)]],
     });
+  }
+
+  scrollToSection(id: string) {
+    this.viewportScroller.scrollToAnchor(id);
   }
 
   // Charger les formations récentes
@@ -75,7 +80,7 @@ export class Accuiel implements OnInit {
     event.target.src = 'assets/default-formation.png';
   }
 
-  // Méthode existante pour le contact
+  // Méthode pour l'envoi du formulaire de contact
   onSubmit(): void {
     if (this.contactForm.valid) {
       this.isLoading = true;
@@ -89,14 +94,31 @@ export class Accuiel implements OnInit {
           this.messageSent = true;
           this.contactForm.reset();
 
+          // Ajouter fade out avant de masquer complètement
           setTimeout(() => {
-            this.messageSent = false;
-          }, 5000);
+            const alert = document.querySelector('.alert-success');
+            if (alert) alert.classList.add('fade-out');
+          }, 1500); // attendre 1,5s avant fade out
+
+          setTimeout(() => {
+            this.messageSent = false; // retire le message après l'animation
+          }, 2000); // correspond à la durée totale (fade + buffer)
         },
         error: (error) => {
           this.isLoading = false;
           this.errorMessage =
             error.error?.error || "Erreur lors de l'envoi du message. Veuillez réessayer.";
+
+          // Ajouter fade out pour message d'erreur
+          setTimeout(() => {
+            const alert = document.querySelector('.alert-danger');
+            if (alert) alert.classList.add('fade-out');
+          }, 1500);
+
+          setTimeout(() => {
+            this.errorMessage = '';
+          }, 2000);
+
           console.error('Erreur:', error);
         },
       });

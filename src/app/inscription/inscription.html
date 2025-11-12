@@ -17,9 +17,31 @@
         <label>Niveau</label>
         <input formControlName="niveau" type="text" />
 
-        <button type="submit" [disabled]="inscriptionForm.invalid">Envoyer</button>
+        <button type="submit" [disabled]="isLoading || inscriptionForm.invalid">
+            {{ isLoading ? 'Envoi...' : 'Envoyer' }}
+        </button>
     </form>
 
+    <!-- ✅ MESSAGES -->
     <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
     <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+</div>
+
+<!-- 💬 MODALE DYNAMIQUE -->
+<div class="modal" *ngIf="isLoading || successMessage || errorMessage">
+    <div class="modal-content" [ngClass]="{
+      loading: isLoading,
+      success: successMessage,
+      error: errorMessage
+    }">
+        <!-- Loader -->
+        <div *ngIf="isLoading" class="spinner"></div>
+        <p *ngIf="isLoading">Inscription en cours...</p>
+
+        <!-- Succès -->
+        <p *ngIf="successMessage">{{ successMessage }}</p>
+
+        <!-- Erreur -->
+        <p *ngIf="errorMessage">{{ errorMessage }}</p>
+    </div>
 </div>

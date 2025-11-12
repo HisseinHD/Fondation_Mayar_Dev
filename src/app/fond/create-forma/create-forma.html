@@ -1,53 +1,109 @@
-<div class="create-formation">
-    <h2>Créer une Formation</h2>
+<form [formGroup]="formationForm" (ngSubmit)="onSubmit()" class="form-container">
+    <h2>Créer une formation</h2>
 
-    <form [formGroup]="formationForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
-        <div class="form-group">
-            <label>Titre</label>
-            <input type="text" formControlName="titre" placeholder="Ex: Développement Web" />
-        </div>
+    <!-- 🟦 TITRE -->
+    <div class="form-group">
+        <label>Titre *</label>
+        <input formControlName="titre" type="text" />
+        <small *ngIf="f['titre'].touched && f['titre'].invalid">
+            <ng-container *ngIf="f['titre'].errors?.['required']">
+                Le titre est obligatoire.
+            </ng-container>
+            <ng-container *ngIf="f['titre'].errors?.['minlength']">
+                Le titre doit contenir au moins 3 caractères.
+            </ng-container>
+        </small>
+    </div>
 
-        <div class="form-group">
-            <label>Catégorie</label>
-            <input type="text" formControlName="categorie" placeholder="Ex: Programmation" />
-        </div>
+    <!-- 🟩 CATÉGORIE -->
+    <div class="form-group">
+        <label>Catégorie *</label>
+        <select formControlName="categorie">
+            <option value="">-- Sélectionner une catégorie --</option>
+            <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+        <small *ngIf="f['categorie'].touched && f['categorie'].invalid">
+            Catégorie requise.
+        </small>
+    </div>
 
-        <div class="form-group">
-            <label>Prix (FCFA)</label>
-            <input type="number" formControlName="prix" min="0" />
-        </div>
+    <!-- 🟨 PRIX -->
+    <div class="form-group">
+        <label>Prix (FCFA) *</label>
+        <input formControlName="prix" type="number" />
+        <small *ngIf="f['prix'].touched && f['prix'].invalid">
+            <ng-container *ngIf="f['prix'].errors?.['required']">
+                Le prix est obligatoire.
+            </ng-container>
+            <ng-container *ngIf="f['prix'].errors?.['min']">
+                Le prix doit être ≥ 0.
+            </ng-container>
+        </small>
+    </div>
 
-        <div class="form-group">
-            <label>Description</label>
-            <textarea formControlName="description" rows="4"></textarea>
-        </div>
+    <!-- 🟧 NOMBRE DE PLACES -->
+    <div class="form-group">
+        <label>Nombre de places *</label>
+        <input formControlName="places" type="number" />
+        <small *ngIf="f['places'].touched && f['places'].invalid">
+            <ng-container *ngIf="f['places'].errors?.['required']">
+                Le nombre de places est obligatoire.
+            </ng-container>
+            <ng-container *ngIf="f['places'].errors?.['min']">
+                Au moins 1 place requise.
+            </ng-container>
+        </small>
+    </div>
 
-        <div class="form-group">
-            <label>Places disponibles</label>
-            <input type="number" formControlName="places" min="0" />
-        </div>
+    <!-- 🗓️ DATES -->
+    <div class="form-group">
+        <label>Date de début *</label>
+        <input formControlName="dateDebut" type="date" />
+    </div>
 
-        <div class="form-group">
-            <label>Date de début</label>
-            <input type="date" formControlName="dateDebut" />
-        </div>
+    <div class="form-group">
+        <label>Date de fin *</label>
+        <input formControlName="dateFin" type="date" />
+        <small *ngIf="formationForm.hasError('invalidDateRange')">
+            La date de fin doit être après la date de début.
+        </small>
+    </div>
 
-        <div class="form-group">
-            <label>Date de fin</label>
-            <input type="date" formControlName="dateFin" />
-        </div>
+    <!-- 📝 DESCRIPTION -->
+    <div class="form-group">
+        <label>Description *</label>
+        <textarea formControlName="description"></textarea>
+        <small *ngIf="f['description'].touched && f['description'].invalid">
+            <ng-container *ngIf="f['description'].errors?.['required']">
+                La description est obligatoire.
+            </ng-container>
+            <ng-container *ngIf="f['description'].errors?.['minlength']">
+                La description doit comporter au moins 10 caractères.
+            </ng-container>
+        </small>
+    </div>
 
-        <div class="form-group">
-            <label>Image</label>
-            <input type="file" (change)="onFileSelected($event)" accept="image/*" />
-            <div class="image-preview" *ngIf="imagePreview">
-            </div>
-        </div>
+    <!-- 🖼️ IMAGE -->
+    <div class="form-group">
+        <label>Image *</label>
+        <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+        <img *ngIf="imagePreview" [src]="imagePreview" alt="Aperçu" class="preview" />
+    </div>
 
-        <button type="submit" [disabled]="isLoading">
-            {{ isLoading ? 'Enregistrement...' : 'Créer la formation' }}
-        </button>
+    <!-- 🔘 BOUTON -->
+    <button type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Création...' : 'Créer la formation' }}
+    </button>
+</form>
 
-        <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
-    </form>
+<!-- 🟢 MODALE -->
+<div class="modal" *ngIf="showModal">
+    <div class="modal-content" [ngClass]="{
+      success: modalType === 'success',
+      error: modalType === 'error',
+      loading: modalType === 'loading'
+    }">
+        <div *ngIf="modalType === 'loading'" class="spinner"></div>
+        <p>{{ modalMessage }}</p>
+    </div>
 </div>

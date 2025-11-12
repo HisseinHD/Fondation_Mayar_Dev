@@ -252,4 +252,23 @@
             </div>
         </form>
     </div>
+    <!-- MODALE DYNAMIQUE GLOBALE -->
+    <div class="modal" *ngIf="loading || successMessage || errorMessage">
+        <div class="modal-content" [ngClass]="{
+          loading: loading,
+          success: successMessage,
+          error: errorMessage
+        }">
+            <!-- Spinner -->
+            <div *ngIf="loading" class="spinner"></div>
+            <p *ngIf="loading">Traitement en cours...</p>
+    
+            <!-- Succès -->
+            <p *ngIf="successMessage">{{ successMessage }}</p>
+    
+            <!-- Erreur -->
+            <p *ngIf="errorMessage">{{ errorMessage }}</p>
+        </div>
+    </div>
+
 </main>

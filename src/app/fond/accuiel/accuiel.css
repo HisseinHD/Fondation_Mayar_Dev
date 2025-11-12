@@ -314,6 +314,90 @@ footer .socials i {
 .foot-left h3 {
   margin: 0;
 }
+
+/* ===== MODALE CENTRÉE PIP ===== */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  backdrop-filter: blur(3px);
+}
+
+/* Carré 4x4 centré */
+.modal-content {
+  width: 250px;
+  height: 250px;
+  background: #fff;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  animation: popIn 0.3s ease-out;
+  font-family: 'Poppins', sans-serif;
+}
+/* Message de succès / erreur avec transition douce */
+.alert {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.alert.fade-out {
+  opacity: 0;
+}
+
+/* Couleurs selon le type */
+.modal-content.success {
+  border: 4px solid #28a745;
+  color: #28a745;
+}
+
+.modal-content.error {
+  border: 4px solid #d91f2b;
+  color: #d91f2b;
+}
+
+.modal-content.loading {
+  border: 4px solid #0b66c2;
+  color: #0b66c2;
+}
+
+/* Spinner */
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #ccc;
+  border-top: 5px solid #0b66c2;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  animation: spin 0.9s linear infinite;
+}
+
+/* Animations */
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 /* 🌿 Carte de contact principale */
 .card.contact-info {
   background: #ffffff;

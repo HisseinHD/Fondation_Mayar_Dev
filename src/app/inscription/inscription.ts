@@ -15,6 +15,7 @@ export class InscriptionComponent implements OnInit {
   formationId!: string;
   successMessage = '';
   errorMessage = '';
+  isLoading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -37,15 +38,26 @@ export class InscriptionComponent implements OnInit {
   onSubmit() {
     if (this.inscriptionForm.invalid) return;
 
+    this.successMessage = '';
+    this.errorMessage = '';
+    this.isLoading = true;
+
     const data = { ...this.inscriptionForm.value, formationId: this.formationId };
 
     this.inscriptionService.inscrire(data).subscribe({
       next: () => {
-        this.successMessage = 'Inscription réussie';
-        setTimeout(() => this.router.navigate(['/formations']), 2000);
+        this.successMessage = ' Inscription réussie !';
+        this.isLoading = false;
+
+        setTimeout(() => {
+          this.successMessage = '';
+          this.router.navigate(['/formations']);
+        }, 2000);
       },
       error: () => {
-        this.errorMessage = 'Erreur lors de l’inscription';
+        this.isLoading = false;
+        this.errorMessage = '❌ Erreur lors de l’inscription.';
+        setTimeout(() => (this.errorMessage = ''), 2500);
       },
     });
   }

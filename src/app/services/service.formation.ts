@@ -34,9 +34,11 @@ export class FormationService {
   }
 
   // ➕ Ajouter une formation
-  addFormation(data: FormData): Observable<Formation> {
+  addFormation(data: FormData): Observable<{ message: string; formation: Formation }> {
     const headers = this.getAuthHeaders();
-    return this.http.post<Formation>(`${this.apiUrl}/add`, data, { headers });
+    return this.http.post<{ message: string; formation: Formation }>(`${this.apiUrl}/add`, data, {
+      headers,
+    });
   }
 
   // 📄 Récupérer toutes les formations (avec pagination optionnelle)

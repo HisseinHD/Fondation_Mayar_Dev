@@ -13,7 +13,7 @@ import { Router, RouterLink } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HttpClientModule, ],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
 })
@@ -108,11 +108,12 @@ export class Login implements OnInit, OnDestroy {
   }
 
   // Validateur pour vérifier que les mots de passe correspondent
+  // Validateur générique : pass the names of the two controls in the form group
   passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
-    const password = control.get('password');
-    const confirmPassword = control.get('confirmPassword');
+    const passwordControl = control.get('password') || control.get('newPassword');
+    const confirmControl = control.get('confirmPassword');
 
-    if (password && confirmPassword && password.value !== confirmPassword.value) {
+    if (passwordControl && confirmControl && passwordControl.value !== confirmControl.value) {
       return { passwordMismatch: true };
     }
     return null;
@@ -439,12 +440,23 @@ export class Login implements OnInit, OnDestroy {
 
   // Mot de passe oublié - Étape 3: Réinitialisation du mot de passe
   resetPassword(): void {
-    if (this.resetPasswordForm.invalid) return;
+    if (this.resetPasswordForm.invalid) {
+      this.errorMessage = 'Veuillez vérifier le formulaire.';
+      return;
+    }
 
-    // Validation supplémentaire
     if (!this.resetToken) {
       this.errorMessage =
         'Erreur: Token de réinitialisation manquant. Veuillez recommencer le processus.';
+      return;
+    }
+
+    const newPassword = this.resetPasswordForm.get('newPassword')?.value;
+    const confirmPassword = this.resetPasswordForm.get('confirmPassword')?.value;
+
+    // Vérif côté client : mêmes checks que côté serveur (pratique UX)
+    if (newPassword !== confirmPassword) {
+      this.errorMessage = 'La confirmation du mot de passe ne correspond pas.';
       return;
     }
 
@@ -453,13 +465,9 @@ export class Login implements OnInit, OnDestroy {
 
     const resetData = {
       resetToken: this.resetToken,
-      newPassword: this.resetPasswordForm.get('newPassword')?.value,
+      newPassword,
+      confirmPassword,
     };
-
-    console.log('🔍 Envoi vers reset-password:', {
-      resetToken: this.resetToken ? 'présent' : 'absent',
-      newPassword: '***',
-    });
 
     this.http
       .post('https://fondation-mayar-1.onrender.com/auth/reset-password', resetData)
@@ -472,7 +480,6 @@ export class Login implements OnInit, OnDestroy {
           this.resetToken = '';
           this.resetPasswordForm.reset();
 
-          // Rediriger vers la connexion après 2 secondes
           setTimeout(() => {
             this.switchToLogin();
             this.successMessage =
@@ -481,9 +488,10 @@ export class Login implements OnInit, OnDestroy {
         },
         error: (err) => {
           this.loading = false;
-          console.error('❌ Erreur reset-password:', err);
+          // afficher message renvoyé par le serveur ou générique
           this.errorMessage =
             err.error?.message || 'Erreur lors de la réinitialisation du mot de passe';
+          console.error('❌ Erreur reset-password:', err);
         },
       });
   }
