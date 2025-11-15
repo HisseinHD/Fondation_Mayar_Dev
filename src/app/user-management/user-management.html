@@ -1,0 +1,54 @@
+<h2>Gestion des utilisateurs</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Rôle</th>
+            <th>Email vérifié</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of users">
+            <td>{{user.name}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.role}}</td>
+            <td>{{user.isEmailVerified ? 'Oui' : 'Non'}}</td>
+            <td>
+                <button class="btn edit" (click)="openEditModal(user)">Modifier</button>
+                <button class="btn delete" (click)="openDeleteModal(user)">Supprimer</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Modale modification -->
+<div class="modal" *ngIf="selectedUser">
+    <div class="modal-content">
+        <h3>Modifier utilisateur</h3>
+        <label>Nom:</label>
+        <input [(ngModel)]="selectedUser.name">
+        <label>Email:</label>
+        <input [(ngModel)]="selectedUser.email">
+        <label>Rôle:</label>
+        <input [(ngModel)]="selectedUser.role">
+        <div class="modal-actions">
+            <button class="btn save" (click)="saveUser()">Enregistrer</button>
+            <button class="btn cancel" (click)="closeEditModal()">Annuler</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modale suppression -->
+<div class="modal" *ngIf="userToDelete">
+    <div class="modal-content">
+        <h3>Confirmer la suppression</h3>
+        <p>Voulez-vous vraiment supprimer {{userToDelete.name}} ?</p>
+        <div class="modal-actions">
+            <button class="btn delete" (click)="confirmDelete()">Supprimer</button>
+            <button class="btn cancel" (click)="closeDeleteModal()">Annuler</button>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface Actualite {
@@ -22,39 +22,40 @@ export class ActualiteService {
 
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('token');
-    return new HttpHeaders({
-      Authorization: `Bearer ${token || ''}`,
-    });
+    return new HttpHeaders({ Authorization: `Bearer ${token || ''}` });
   }
 
-  // 📄 Récupérer toutes les actualités
   getAll(): Observable<any> {
-    return this.http.get(this.apiUrl);
+    return this.http.get(this.apiUrl).pipe(catchError((error) => throwError(() => error)));
   }
 
-  // 📄 Récupérer une actualité par ID
   getById(id: string): Observable<Actualite> {
-    return this.http.get<Actualite>(`${this.apiUrl}/${id}`);
+    return this.http
+      .get<Actualite>(`${this.apiUrl}/${id}`)
+      .pipe(catchError((error) => throwError(() => error)));
   }
 
-  // ➕ Ajouter une actualité
   add(data: FormData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/add`, data, {
-      headers: this.getAuthHeaders(),
-    });
+    return this.http
+      .post(`${this.apiUrl}/add`, data, {
+        headers: this.getAuthHeaders(),
+      })
+      .pipe(catchError((error) => throwError(() => error)));
   }
 
-  // ✏️ Mettre à jour une actualité
   update(id: string, data: FormData): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, data, {
-      headers: this.getAuthHeaders(),
-    });
+    return this.http
+      .put(`${this.apiUrl}/${id}`, data, {
+        headers: this.getAuthHeaders(),
+      })
+      .pipe(catchError((error) => throwError(() => error)));
   }
 
-  // ❌ Supprimer une actualité
   delete(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`, {
-      headers: this.getAuthHeaders(),
-    });
+    return this.http
+      .delete(`${this.apiUrl}/${id}`, {
+        headers: this.getAuthHeaders(),
+      })
+      .pipe(catchError((error) => throwError(() => error)));
   }
 }

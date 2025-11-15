@@ -33,31 +33,35 @@ export class FormationService {
     });
   }
 
-  // ➕ Ajouter une formation
+  // Ajouter une formation
   addFormation(data: FormData): Observable<{ message: string; formation: Formation }> {
     const headers = this.getAuthHeaders();
     return this.http.post<{ message: string; formation: Formation }>(`${this.apiUrl}/add`, data, {
       headers,
     });
   }
-
-  // 📄 Récupérer toutes les formations (avec pagination optionnelle)
-  getFormations(page: number = 1): Observable<{ formations: Formation[] }> {
-    return this.http.get<{ formations: Formation[] }>(`${this.apiUrl}?page=${page}`);
+  // ✅ Support pagination
+  getFormations(
+    page: number = 1,
+    limit: number = 10
+  ): Observable<{ formations: Formation[]; total: number; pages: number }> {
+    return this.http.get<{ formations: Formation[]; total: number; pages: number }>(
+      `${this.apiUrl}/formations?page=${page}&limit=${limit}`
+    );
   }
 
-  // 📄 Récupérer une formation par ID
+  //  Récupérer une formation par ID
   getFormation(id: string): Observable<Formation> {
     return this.http.get<Formation>(`${this.apiUrl}/${id}`);
   }
 
-  // ❌ Supprimer une formation
+  // Supprimer une formation
   deleteFormation(id: string): Observable<{ message: string }> {
     const headers = this.getAuthHeaders();
     return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`, { headers });
   }
 
-  // ✏️ Mettre à jour une formation
+  //  Mettre à jour une formation
   updateFormation(id: string, data: FormData): Observable<Formation> {
     const headers = this.getAuthHeaders();
     return this.http.put<Formation>(`${this.apiUrl}/${id}`, data, { headers });

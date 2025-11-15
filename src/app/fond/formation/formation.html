@@ -1,10 +1,17 @@
 <div class="formations-container">
     <h2>Nos Formations</h2>
 
+    <!-- Bouton ajouter (ADMIN uniquement) -->
+    <button *ngIf="isConnected" class="btn-ajouter" (click)="openAddModal()">
+        + Ajouter une formation
+    </button>
+
     <div *ngIf="loading" class="loading">Chargement...</div>
     <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
-    <!-- ✅ Tableau pour ADMIN connecté -->
+    <!-- ===================================================== -->
+    <!-- ====================== TABLE ADMIN =================== -->
+    <!-- ===================================================== -->
     <table *ngIf="isConnected && !loading && formations.length" class="admin-table">
         <thead>
             <tr>
@@ -14,6 +21,7 @@
                 <th>Catégorie</th>
                 <th>Date début</th>
                 <th>Date fin</th>
+                <th>Places</th>
                 <th>Image</th>
                 <th>Actions</th>
             </tr>
@@ -23,22 +31,21 @@
             <tr *ngFor="let f of formations">
                 <td>{{ f.titre }}</td>
 
-                <!-- ✅ Description tronquée avec vérification complète -->
+                <!-- DESCRIPTION AVEC VOIR PLUS / VOIR MOINS -->
                 <td>
                     <ng-container *ngIf="!f.showFullDescription">
-                        {{ f.description ? f.description.slice(0, 80) : 'Pas de description' }}
+                        {{ f.description ? f.description.slice(0, 80) : 'Aucune description' }}
                         <span *ngIf="f.description && f.description.length > 80">...</span>
-
-                        <button class="btn-voir-plus" *ngIf="f.description && f.description.length > 80"
-                            (click)="f.showFullDescription = true">
-                            Voir plus
+                        <button class="btn-voir-plus" *ngIf="(f.description ?? '').length > 80"
+                            (click)="toggleDescription(f)">
+                            Voir +
                         </button>
                     </ng-container>
 
                     <ng-container *ngIf="f.showFullDescription">
                         {{ f.description }}
-                        <button class="btn-voir-moins" (click)="f.showFullDescription = false">
-                            Voir moins
+                        <button class="btn-voir-moins" (click)="toggleDescription(f)">
+                            Voir -
                         </button>
                     </ng-container>
                 </td>
@@ -47,46 +54,137 @@
                 <td>{{ f.categorie || 'Non spécifiée' }}</td>
                 <td>{{ f.dateDebut | date:'dd/MM/yyyy' }}</td>
                 <td>{{ f.dateFin | date:'dd/MM/yyyy' }}</td>
+                <td>{{ f.places || 0 }}</td>
 
                 <td>
-                    <img *ngIf="f.image" [src]="f.image" alt="{{ f.titre }}" width="60" />
+                    <img *ngIf="f.image" [src]="f.image" alt="{{ f.titre }}" width="70" />
                 </td>
 
                 <td class="actions">
-                    <button class="btn-modifier" (click)="modifierFormation(f._id)">Modifier</button>
-                    <button class="btn-supprimer" (click)="supprimerFormation(f._id)">Supprimer</button>
-                    <button class="btn-voir" (click)="openFormationDetail(f._id)">Voir</button>
+                    <button class="btn-modifier" (click)="openEditModal(f)">Modifier</button>
+                    <button class="btn-supprimer" (click)="openDeleteModal(f)">Supprimer</button>
+                    <button class="btn-voir" (click)="openDetail(f._id)">Voir</button>
                 </td>
             </tr>
         </tbody>
     </table>
 
-    <!-- ✅ Cartes simples pour VISITEURS non connectés -->
+    <!-- ===================================================== -->
+    <!-- ===================== VISITEUR ======================= -->
+    <!-- ===================================================== -->
     <div *ngIf="!isConnected && !loading && formations.length" class="grid">
         <div *ngFor="let f of formations" class="card">
             <img *ngIf="f.image" [src]="f.image" alt="{{ f.titre }}" />
+
             <h3>{{ f.titre }}</h3>
+
             <p>
-                {{ f.description ? f.description.slice(0, 100) : 'Pas de description disponible' }}
+                {{ f.description?.slice(0, 100) || 'Aucune description disponible' }}
                 <span *ngIf="f.description && f.description.length > 100">...</span>
             </p>
 
             <p><strong>Prix :</strong> {{ f.prix }} FCFA</p>
             <p><strong>Catégorie :</strong> {{ f.categorie || 'Non spécifiée' }}</p>
-
-            <p *ngIf="f.dateDebut"><strong>Date de début :</strong> {{ f.dateDebut | date:'dd/MM/yyyy' }}</p>
-            <p *ngIf="f.dateFin"><strong>Date de fin :</strong> {{ f.dateFin | date:'dd/MM/yyyy' }}</p>
+            <p *ngIf="f.dateDebut"><strong>Date début :</strong> {{ f.dateDebut | date:'dd/MM/yyyy' }}</p>
 
             <div class="actions">
-                <button class="btn-inscrire" (click)="ouvrirFormulaireInscription(f._id)">
+                <button class="btn-inscrire" (click)="ouvrirFormulaireInscription(f._id!)">
                     S’inscrire
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- ✅ Message si aucune formation -->
+    <!-- Message aucune formation -->
     <div *ngIf="!loading && !formations.length" class="no-data">
         Aucune formation disponible.
+    </div>
+</div>
+
+
+<!-- ===================================================== -->
+<!-- ======================= MODALE AJOUT ================= -->
+<!-- ===================================================== -->
+<div class="modal" *ngIf="showAddModal">
+    <div class="modal-content">
+        <h3>Ajouter une formation</h3>
+
+        <label>Titre</label>
+        <input type="text" [(ngModel)]="formData.titre" />
+
+        <label>Description</label>
+        <textarea [(ngModel)]="formData.description"></textarea>
+
+        <label>Prix</label>
+        <input type="number" [(ngModel)]="formData.prix" />
+
+        <label>Catégorie</label>
+        <input type="text" [(ngModel)]="formData.categorie" />
+
+        <label>Date début</label>
+        <input type="date" [(ngModel)]="formData.dateDebut" />
+
+        <label>Date fin</label>
+        <input type="date" [(ngModel)]="formData.dateFin" />
+
+        <label>Places</label>
+        <input type="number" [(ngModel)]="formData.places" />
+
+        <label>Image</label>
+        <input type="file" (change)="handleImage($event)" />
+
+        <button class="btn-valider" (click)="addFormation()">Enregistrer</button>
+        <button class="btn-cancel" (click)="showAddModal = false">Annuler</button>
+    </div>
+</div>
+
+
+<!-- ===================================================== -->
+<!-- ======================= MODALE EDIT ================== -->
+<!-- ===================================================== -->
+<div class="modal" *ngIf="showEditModal">
+    <div class="modal-content">
+        <h3>Modifier : {{ selectedFormation?.titre }}</h3>
+
+        <label>Titre</label>
+        <input type="text" [(ngModel)]="formData.titre" />
+
+        <label>Description</label>
+        <textarea [(ngModel)]="formData.description"></textarea>
+
+        <label>Prix</label>
+        <input type="number" [(ngModel)]="formData.prix" />
+
+        <label>Catégorie</label>
+        <input type="text" [(ngModel)]="formData.categorie" />
+
+        <label>Date début</label>
+        <input type="date" [(ngModel)]="formData.dateDebut" />
+
+        <label>Date fin</label>
+        <input type="date" [(ngModel)]="formData.dateFin" />
+
+        <label>Places</label>
+        <input type="number" [(ngModel)]="formData.places" />
+
+        <label>Nouvelle image (optionnel)</label>
+        <input type="file" (change)="handleImage($event)" />
+
+        <button class="btn-valider" (click)="updateFormation()">Mettre à jour</button>
+        <button class="btn-cancel" (click)="showEditModal = false">Annuler</button>
+    </div>
+</div>
+
+
+<!-- ===================================================== -->
+<!-- =================== MODALE SUPPRESSION =============== -->
+<!-- ===================================================== -->
+<div class="modal" *ngIf="showDeleteModal">
+    <div class="modal-content delete">
+        <h3>Supprimer la formation ?</h3>
+        <p>{{ selectedFormation?.titre }}</p>
+
+        <button class="btn-delete" (click)="deleteFormation()">Supprimer</button>
+        <button class="btn-cancel" (click)="showDeleteModal = false">Annuler</button>
     </div>
 </div>

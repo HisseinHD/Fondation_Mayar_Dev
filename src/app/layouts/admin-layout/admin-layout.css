@@ -29,7 +29,7 @@
 /* Header */
 .admin-header {
   grid-area: header;
-  background: linear-gradient(135deg, #002fff 0%, #1b1a1b 100%);
+  background: linear-gradient(135deg,#0355a7 0%,#0355a7 100%);
   color: white;
   padding: 1rem 2rem;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -47,8 +47,8 @@
 /* Sidebar */
 .sidebar {
   grid-area: sidebar;
-  background: #2c3e50;
-  color: white;
+  background: #0355a7;
+  color: rgb(26, 24, 24);
   padding: 2rem 0;
   height: 100%;
   position: sticky;
@@ -107,7 +107,7 @@
 /* Footer */
 .admin-footer {
   grid-area: footer;
-  background: #34495e;
+  background: #0355a7;
   color: #ecf0f1;
   text-align: center;
   padding: 1rem;
@@ -184,7 +184,7 @@
     left: -220px; /* caché par défaut */
     width: 220px;
     height: 100vh;
-    background: #2c3e50;
+    background: #0355a7;
     padding: 1rem 0;
     transition: left 0.3s ease;
     z-index: 2000;

@@ -13,6 +13,7 @@ import { InscriptionComponent } from './inscription/inscription';
 import { ListeInscritsComponent } from './liste-inscrits/liste-inscrits';
 import { GestionCandidatsComponent } from './gestion-candidats/gestion-candidats';
 import { AproposComponent } from './apropos/apropos';
+import { UserManagementComponent } from './user-management/user-management';
 
 export const routes: Routes = [
   {
@@ -40,6 +41,7 @@ export const routes: Routes = [
       { path: 'formation/:id', component: FormationDetailComponent },
       { path: 'liste-inscrits/:id', component: ListeInscritsComponent },
       { path: 'gestion-candidats', component: GestionCandidatsComponent },
+      { path: 'parametres', component: UserManagementComponent },
 
       // ✅ ICI
       // ajoute les autres pages admin ici
