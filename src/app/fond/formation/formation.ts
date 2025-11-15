@@ -1,73 +1,98 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { FormationService, Formation } from '../../services/service.formation';
 
 @Component({
   selector: 'app-formation',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './formation.html',
   styleUrls: ['./formation.css'],
 })
 export class FormationComponent implements OnInit {
-  formations: (Formation & { showFullDescription: boolean })[] = [];
-  loading = true;
+  formations: Formation[] = [];
+  loading = false;
   errorMessage = '';
-  isConnected = false;
 
-  // Pagination
-  page: number = 1;
-  limit: number = 5;
-  total: number = 0;
-  totalPages: number = 1;
+  formationForm!: FormGroup;
 
-  // Modales
   showAddModal = false;
+  categories = ['Informatique', 'Bureautique', 'Entrepreneuriat', 'Design', 'Autre'];
+
+  imagePreview: string | null = null;
+  selectedImageFile: File | null = null;
+
+  showModal = false;
+  modalMessage = '';
+  modalType: 'success' | 'error' | 'loading' = 'success';
+
   showEditModal = false;
-  showDeleteModal = false;
   selectedFormation: Formation | null = null;
+  formData: any = {};
 
-  // Formulaire ajout / modif
-  formData: any = {
-    titre: '',
-    description: '',
-    prix: 0,
-    categorie: '',
-    dateDebut: '',
-    dateFin: '',
-    places: 0,
-  };
-  imageFile: File | null = null;
+  showDeleteModal = false;
 
-  constructor(private formationService: FormationService, private router: Router) {}
+  isConnected = true;
+
+  constructor(
+    private fb: FormBuilder,
+    private formationService: FormationService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.isConnected = !!localStorage.getItem('token');
-    this.getAllFormations();
+     const token = localStorage.getItem('token');
+
+     // Si token → admin connecté → afficher tableau
+     // Si pas de token → visiteur → afficher cartes
+     this.isConnected = token ? true : false;
+
+    this.initForm();
+    this.loadFormations();
   }
 
-  // ====================== Récupération formations ======================
-  getAllFormations(): void {
+  initForm() {
+    this.formationForm = this.fb.group(
+      {
+        titre: ['', [Validators.required, Validators.minLength(3)]],
+        categorie: ['', Validators.required],
+        prix: [0, [Validators.required, Validators.min(0)]],
+        places: [1, [Validators.required, Validators.min(1)]],
+        dateDebut: ['', Validators.required],
+        dateFin: ['', Validators.required],
+        description: ['', [Validators.required, Validators.minLength(10)]],
+        image: [''],
+      },
+      { validators: this.validateDates }
+    );
+  }
+
+  get f() {
+    return this.formationForm.controls;
+  }
+
+  validateDates(group: FormGroup) {
+    const d1 = group.get('dateDebut')?.value;
+    const d2 = group.get('dateFin')?.value;
+    return d1 && d2 && d2 < d1 ? { invalidDateRange: true } : null;
+  }
+
+  loadFormations() {
     this.loading = true;
-
-    this.formationService.getFormations(this.page, this.limit).subscribe({
-      next: (response: any) => {
-        const data: Formation[] = response.formations ?? response;
-
-        // Tri décroissant par date de création, sécurité pour undefined
-        this.formations = data
-          .sort(
-            (a, b) => new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime()
-          )
-          .map((f: Formation) => ({
-            ...f,
-            showFullDescription: false,
-          }));
-
-        this.total = response.total ?? this.formations.length;
-        this.totalPages = Math.ceil(this.total / this.limit);
+    this.formationService.getFormations().subscribe({
+      next: (data) => {
+        this.formations = (data.formations ?? []).map((f: Formation) => ({
+          ...f,
+          showFullDescription: false,
+        }));
         this.loading = false;
       },
       error: () => {
@@ -77,91 +102,68 @@ export class FormationComponent implements OnInit {
     });
   }
 
-  // ====================== Inscription ======================
-  ouvrirFormulaireInscription(id: string) {
-    this.router.navigate(['/inscription', id]);
-  }
-
-  // ====================== Pagination ======================
-  pageSuivante() {
-    if (this.page < this.totalPages) {
-      this.page++;
-      this.getAllFormations();
-    }
-  }
-
-  pagePrecedente() {
-    if (this.page > 1) {
-      this.page--;
-      this.getAllFormations();
-    }
-  }
-
-  // ====================== Modales et formulaire ======================
-  openAddModal() {
-    this.showAddModal = true;
-    this.resetForm();
-  }
-
-  openEditModal(f: Formation) {
-    this.selectedFormation = f;
-    this.showEditModal = true;
-    this.formData = { ...f };
-  }
-
-  openDeleteModal(f: Formation) {
-    this.selectedFormation = f;
-    this.showDeleteModal = true;
-  }
-
-  handleImage(event: any) {
-    this.imageFile = event.target.files[0];
-  }
-
-  addFormation() {
-    const data = new FormData();
-    Object.keys(this.formData).forEach((key) => data.append(key, this.formData[key]));
-    if (this.imageFile) data.append('image', this.imageFile);
-
-    this.formationService.addFormation(data).subscribe({
-      next: () => {
-        this.showAddModal = false;
-        this.page = 1; // nouvelle formation en tête
-        this.getAllFormations();
-      },
-      error: (e) => console.error(e),
-    });
-  }
-
-  updateFormation() {
-    if (!this.selectedFormation?._id) return;
-    const data = new FormData();
-    Object.keys(this.formData).forEach((key) => data.append(key, this.formData[key]));
-    if (this.imageFile) data.append('image', this.imageFile);
-
-    this.formationService.updateFormation(this.selectedFormation._id, data).subscribe({
-      next: () => {
-        this.showEditModal = false;
-        this.getAllFormations();
-      },
-      error: (e) => console.error(e),
-    });
-  }
-
-  deleteFormation() {
-    if (!this.selectedFormation?._id) return;
-    this.formationService.deleteFormation(this.selectedFormation._id).subscribe({
-      next: () => {
-        this.showDeleteModal = false;
-        this.formations = this.formations.filter((x) => x._id !== this.selectedFormation?._id);
-      },
-      error: (e) => console.error(e),
-    });
-  }
-
-  // ====================== Utilitaires ======================
   toggleDescription(f: any) {
     f.showFullDescription = !f.showFullDescription;
+  }
+
+  openAddModal() {
+    this.showAddModal = true;
+    this.imagePreview = null;
+    this.selectedImageFile = null;
+    this.formationForm.reset();
+  }
+
+  closeAddModal() {
+    this.showAddModal = false;
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    this.selectedImageFile = file;
+
+    const reader = new FileReader();
+    reader.onload = () => (this.imagePreview = reader.result as string);
+    reader.readAsDataURL(file);
+  }
+
+  showNotification(message: string, type: 'success' | 'error' | 'loading') {
+    this.modalMessage = message;
+    this.modalType = type;
+    this.showModal = true;
+
+    if (type !== 'loading') {
+      setTimeout(() => (this.showModal = false), 2000);
+    }
+  }
+
+  // ✅ AJOUT DE FORMATION — VERSION CORRECTE
+  onSubmit() {
+    if (this.formationForm.invalid) return;
+
+    this.showNotification('Création...', 'loading');
+
+    const formData = new FormData();
+    Object.keys(this.formationForm.value).forEach((key) => {
+      formData.append(key, this.formationForm.value[key]);
+    });
+
+    if (this.selectedImageFile) {
+      formData.append('image', this.selectedImageFile);
+    }
+
+    // 🚀 MÉTHODE CORRECTE
+    this.formationService.addFormation(formData).subscribe({
+      next: () => {
+        this.showNotification('Formation créée avec succès', 'success');
+        this.showAddModal = false;
+        this.loadFormations();
+      },
+      error: () => {
+        this.showNotification('Erreur lors de la création', 'error');
+      },
+    });
   }
 
   openDetail(id?: string) {
@@ -169,16 +171,50 @@ export class FormationComponent implements OnInit {
     this.router.navigate(['/formation', id]);
   }
 
-  resetForm() {
-    this.formData = {
-      titre: '',
-      description: '',
-      prix: 0,
-      categorie: '',
-      dateDebut: '',
-      dateFin: '',
-      places: 0,
-    };
-    this.imageFile = null;
+  ouvrirFormulaireInscription(id: string) {
+    this.router.navigate(['/inscription', id]);
+  }
+
+  // 🟦 EDIT
+  openEditModal(f: Formation) {
+    this.selectedFormation = f;
+    this.formData = { ...f };
+    this.showEditModal = true;
+  }
+
+  updateFormation() {
+    if (!this.selectedFormation) return;
+
+    this.formationService.updateFormation(this.selectedFormation._id!, this.formData).subscribe({
+      next: () => {
+        this.showEditModal = false;
+        this.loadFormations();
+        this.showNotification('Formation mise à jour', 'success');
+      },
+      error: () => {
+        this.showNotification('Erreur de mise à jour', 'error');
+      },
+    });
+  }
+
+  // 🔴 DELETE
+  openDeleteModal(f: Formation) {
+    this.selectedFormation = f;
+    this.showDeleteModal = true;
+  }
+
+  deleteFormation() {
+    if (!this.selectedFormation) return;
+
+    this.formationService.deleteFormation(this.selectedFormation._id!).subscribe({
+      next: () => {
+        this.showDeleteModal = false;
+        this.loadFormations();
+        this.showNotification('Formation supprimée', 'success');
+      },
+      error: () => {
+        this.showNotification('Erreur suppression', 'error');
+      },
+    });
   }
 }

@@ -1,4 +1,5 @@
 <div class="formations-container">
+
     <h2>Nos Formations</h2>
 
     <!-- Bouton ajouter (ADMIN uniquement) -->
@@ -9,9 +10,7 @@
     <div *ngIf="loading" class="loading">Chargement...</div>
     <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
-    <!-- ===================================================== -->
     <!-- ====================== TABLE ADMIN =================== -->
-    <!-- ===================================================== -->
     <table *ngIf="isConnected && !loading && formations.length" class="admin-table">
         <thead>
             <tr>
@@ -44,16 +43,14 @@
 
                     <ng-container *ngIf="f.showFullDescription">
                         {{ f.description }}
-                        <button class="btn-voir-moins" (click)="toggleDescription(f)">
-                            Voir -
-                        </button>
+                        <button class="btn-voir-moins" (click)="toggleDescription(f)">Voir -</button>
                     </ng-container>
                 </td>
 
                 <td>{{ f.prix }} FCFA</td>
                 <td>{{ f.categorie || 'Non spécifiée' }}</td>
-                <td>{{ f.dateDebut | date:'dd/MM/yyyy' }}</td>
-                <td>{{ f.dateFin | date:'dd/MM/yyyy' }}</td>
+                <td>{{ f.dateDebut | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ f.dateFin | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ f.places || 0 }}</td>
 
                 <td>
@@ -63,15 +60,13 @@
                 <td class="actions">
                     <button class="btn-modifier" (click)="openEditModal(f)">Modifier</button>
                     <button class="btn-supprimer" (click)="openDeleteModal(f)">Supprimer</button>
-                    <button class="btn-voir" (click)="openDetail(f._id)">Voir</button>
+                    <button class="btn-voir" (click)="openDetail(f._id!)">Voir</button>
                 </td>
             </tr>
         </tbody>
     </table>
 
-    <!-- ===================================================== -->
     <!-- ===================== VISITEUR ======================= -->
-    <!-- ===================================================== -->
     <div *ngIf="!isConnected && !loading && formations.length" class="grid">
         <div *ngFor="let f of formations" class="card">
             <img *ngIf="f.image" [src]="f.image" alt="{{ f.titre }}" />
@@ -101,47 +96,106 @@
     </div>
 </div>
 
+<!-- 🟦 BOUTON AJOUTER -->
 
-<!-- ===================================================== -->
-<!-- ======================= MODALE AJOUT ================= -->
-<!-- ===================================================== -->
+<!-- 🟩 MODALE DE CRÉATION -->
 <div class="modal" *ngIf="showAddModal">
-    <div class="modal-content">
-        <h3>Ajouter une formation</h3>
+    <div class="modal-content form-modal">
+        <h2 class="modal-title">Créer une formation</h2>
 
-        <label>Titre</label>
-        <input type="text" [(ngModel)]="formData.titre" />
+        <form [formGroup]="formationForm" (ngSubmit)="onSubmit()" class="form-container">
+            <!-- TITRE -->
+            <div class="form-group">
+                <label>Titre *</label>
+                <input formControlName="titre" type="text" />
+                <small *ngIf="f['titre'].touched && f['titre'].invalid">
+                    <ng-container *ngIf="f['titre'].errors?.['required']">Le titre est obligatoire.</ng-container>
+                    <ng-container *ngIf="f['titre'].errors?.['minlength']">Min 3 caractères.</ng-container>
+                </small>
+            </div>
 
-        <label>Description</label>
-        <textarea [(ngModel)]="formData.description"></textarea>
+            <!-- CATÉGORIE -->
+            <div class="form-group">
+                <label>Catégorie *</label>
+                <select formControlName="categorie">
+                    <option value="">-- Sélectionner --</option>
+                    <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+                </select>
+                <small *ngIf="f['categorie'].touched && f['categorie'].invalid">Catégorie requise.</small>
+            </div>
 
-        <label>Prix</label>
-        <input type="number" [(ngModel)]="formData.prix" />
+            <!-- PRIX -->
+            <div class="form-group">
+                <label>Prix (FCFA) *</label>
+                <input formControlName="prix" type="number" />
+                <small *ngIf="f['prix'].touched && f['prix'].invalid">
+                    <ng-container *ngIf="f['prix'].errors?.['required']">Le prix est obligatoire.</ng-container>
+                    <ng-container *ngIf="f['prix'].errors?.['min']">Prix >= 0.</ng-container>
+                </small>
+            </div>
 
-        <label>Catégorie</label>
-        <input type="text" [(ngModel)]="formData.categorie" />
+            <!-- PLACES -->
+            <div class="form-group">
+                <label>Nombre de places *</label>
+                <input formControlName="places" type="number" />
+                <small *ngIf="f['places'].touched && f['places'].invalid">
+                    <ng-container *ngIf="f['places'].errors?.['required']">Obligatoire.</ng-container>
+                    <ng-container *ngIf="f['places'].errors?.['min']">Min 1 place.</ng-container>
+                </small>
+            </div>
 
-        <label>Date début</label>
-        <input type="date" [(ngModel)]="formData.dateDebut" />
+            <!-- DATES -->
+            <div class="form-group">
+                <label>Date de début *</label>
+                <input formControlName="dateDebut" type="date" />
+            </div>
 
-        <label>Date fin</label>
-        <input type="date" [(ngModel)]="formData.dateFin" />
+            <div class="form-group">
+                <label>Date de fin *</label>
+                <input formControlName="dateFin" type="date" />
+                <small *ngIf="formationForm.hasError('invalidDateRange')">La date de fin doit être après la date de
+                    début.</small>
+            </div>
 
-        <label>Places</label>
-        <input type="number" [(ngModel)]="formData.places" />
+            <!-- DESCRIPTION -->
+            <div class="form-group">
+                <label>Description *</label>
+                <textarea formControlName="description"></textarea>
+                <small *ngIf="f['description'].touched && f['description'].invalid">
+                    <ng-container *ngIf="f['description'].errors?.['required']">Obligatoire.</ng-container>
+                    <ng-container *ngIf="f['description'].errors?.['minlength']">Min 10 caractères.</ng-container>
+                </small>
+            </div>
 
-        <label>Image</label>
-        <input type="file" (change)="handleImage($event)" />
+            <!-- IMAGE -->
+            <div class="form-group">
+                <label>Image *</label>
+                <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+                <img *ngIf="imagePreview" [src]="imagePreview" alt="Aperçu" class="preview" />
+            </div>
 
-        <button class="btn-valider" (click)="addFormation()">Enregistrer</button>
-        <button class="btn-cancel" (click)="showAddModal = false">Annuler</button>
+            <!-- BOUTONS -->
+            <button type="submit" class="btn-valider" [disabled]="loading">
+                {{ loading ? 'Création...' : 'Créer la formation' }}
+            </button>
+            <button type="button" class="btn-cancel" (click)="closeAddModal()">Annuler</button>
+        </form>
     </div>
 </div>
 
+<!-- 🟢 MODALE DE NOTIFICATION -->
+<div class="modal" *ngIf="showModal">
+    <div class="modal-content" [ngClass]="{
+      success: modalType === 'success',
+      error: modalType === 'error',
+      loading: modalType === 'loading'
+    }">
+        <div *ngIf="modalType === 'loading'" class="spinner"></div>
+        <p>{{ modalMessage }}</p>
+    </div>
+</div>
 
-<!-- ===================================================== -->
 <!-- ======================= MODALE EDIT ================== -->
-<!-- ===================================================== -->
 <div class="modal" *ngIf="showEditModal">
     <div class="modal-content">
         <h3>Modifier : {{ selectedFormation?.titre }}</h3>
@@ -168,17 +222,14 @@
         <input type="number" [(ngModel)]="formData.places" />
 
         <label>Nouvelle image (optionnel)</label>
-        <input type="file" (change)="handleImage($event)" />
+        <input type="file" (change)="onFileSelected($event)" />
 
         <button class="btn-valider" (click)="updateFormation()">Mettre à jour</button>
         <button class="btn-cancel" (click)="showEditModal = false">Annuler</button>
     </div>
 </div>
 
-
-<!-- ===================================================== -->
-<!-- =================== MODALE SUPPRESSION =============== -->
-<!-- ===================================================== -->
+<!-- =================== MODALE SUPPRESSION ================= -->
 <div class="modal" *ngIf="showDeleteModal">
     <div class="modal-content delete">
         <h3>Supprimer la formation ?</h3>

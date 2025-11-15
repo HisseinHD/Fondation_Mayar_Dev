@@ -293,7 +293,9 @@
                 <h5>Durabilité Intégrale</h5>
                 <p>Nos programmes visent un impact à long terme, respectueux de la planète.</p>
             </div>
+            
         </div>
+        
     </div>
 
     <!-- SECTION CONTACT -->
@@ -301,26 +303,26 @@
     <div class="panel">
         <div class="card contact-info">
             <h4>Contact Rapide</h4>
-
+    
             <div *ngIf="messageSent" class="alert alert-success">Votre message a été envoyé avec succès !</div>
             <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-
+    
             <form class="contact-form" [formGroup]="contactForm" (ngSubmit)="onSubmit()">
                 <div class="form-group">
                     <input type="text" name="nom" placeholder="Votre nom" formControlName="name"
                         [class.is-invalid]="name?.invalid && name?.touched" required>
                 </div>
-
+    
                 <div class="form-group">
                     <input type="email" name="email" placeholder="Votre email" formControlName="email"
                         [class.is-invalid]="email?.invalid && email?.touched" required>
                 </div>
-
+    
                 <div class="form-group">
                     <textarea name="message" rows="3" placeholder="Votre message" formControlName="message"
                         [class.is-invalid]="message?.invalid && message?.touched" required></textarea>
                 </div>
-
+    
                 <button type="submit" class="btn primary" [disabled]="isLoading || contactForm.invalid">
                     <span *ngIf="!isLoading">Envoyer</span>
                     <span *ngIf="isLoading">Envoi en cours...</span>
@@ -330,24 +332,23 @@
         <!-- MODALE GLOBALE POUR CONTACT -->
         <div class="modal" *ngIf="isLoading || messageSent || errorMessage">
             <div class="modal-content" [ngClass]="{
-              loading: isLoading,
-              success: messageSent,
-              error: errorMessage
-            }">
+                  loading: isLoading,
+                  success: messageSent,
+                  error: errorMessage
+                }">
                 <!-- Spinner -->
                 <div *ngIf="isLoading" class="spinner"></div>
                 <p *ngIf="isLoading">Envoi en cours...</p>
-        
+    
                 <!-- Succès -->
-            <div *ngIf="messageSent" class="alert alert-success">
-                Merci d'avoir contacté la Fondation ! Votre message a été envoyé avec succès.
-            </div>
-
+                <div *ngIf="messageSent" class="alert alert-success">
+                    Merci d'avoir contacté la Fondation ! Votre message a été envoyé avec succès.
+                </div>
+    
                 <!-- Erreur -->
                 <p *ngIf="errorMessage">{{ errorMessage }}</p>
             </div>
         </div>
-
+    
     </div>
-
-</section>
+    
