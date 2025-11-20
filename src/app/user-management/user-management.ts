@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 interface User {
   _id: string;
@@ -22,7 +23,8 @@ export class UserManagementComponent implements OnInit {
   users: User[] = [];
   selectedUser: User | null = null;
   userToDelete: User | null = null;
-  apiUrl = 'http://localhost:3000/api/users';
+
+  apiUrl = `${environment.apiUrl}/users`;
 
   constructor(private http: HttpClient) {}
 
