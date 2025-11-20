@@ -1,6 +1,4 @@
-/* admin-layout.css */
-
-/* Reset et styles de base */
+/* ----------- RESET ----------- */
 * {
   margin: 0;
   padding: 0;
@@ -8,166 +6,192 @@
 }
 
 :host {
-  display: block;
-  min-height: 100vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f8f9fa;
-}
-
-/* Layout principal */
-:host {
   display: grid;
-  grid-template-areas: 
+  grid-template-areas:
     "header header"
     "sidebar content"
     "footer footer";
+  grid-template-columns: 260px 1fr;
   grid-template-rows: auto 1fr auto;
-  grid-template-columns: 280px 1fr;
   min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fa;
 }
 
-/* Header */
+/* ----------- HEADER ----------- */
 .admin-header {
   grid-area: header;
-  background: linear-gradient(135deg,#0355a7 0%,#0355a7 100%);
+  background: #0355a7;
   color: white;
   padding: 1rem 2rem;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
-.admin-header h1 {
-  font-size: 1.5rem;
+.admin-header .th1 {
+  font-size: 1.4rem;
   font-weight: 600;
-  margin: 0;
 }
 
-/* Sidebar */
+.logo {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  background: white;
+  padding: 4px;
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.3);
+}
+
+/* ----------- SIDEBAR ----------- */
 .sidebar {
   grid-area: sidebar;
-  background: #0355a7;
-  color: rgb(26, 24, 24);
-  padding: 2rem 0;
+  background: #02498d;
+  padding: 1.5rem 0;
   height: 100%;
+  overflow-y: auto;
   position: sticky;
   top: 0;
-  align-self: start;
-  transition: all 0.3s ease;
+  transition: 0.3s;
+  box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-menu {
   list-style: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 .sidebar-menu li {
   margin-bottom: 0.5rem;
 }
 
-.sidebar-menu a {
+.sidebar-menu > li > a {
   display: flex;
   align-items: center;
-  padding: 0.75rem 2rem;
-  color: #bdc3c7;
+  padding: 0.9rem 1.7rem;
+  color: #e2e6ea;
   text-decoration: none;
-  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  font-weight: 500;
   border-left: 4px solid transparent;
+  transition: 0.3s;
+}
+
+.sidebar-menu > li > a i {
+  width: 22px;
+  font-size: 1.1rem;
+}
+
+/* Hover */
+.sidebar-menu > li > a:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-left-color: #57b7ff;
+}
+
+/* Active link */
+.sidebar-menu a.active,
+.sidebar-menu .router-link-active {
+  background: rgba(255, 255, 255, 0.22);
+  color: white !important;
+  border-left-color: #57b7ff;
+}
+
+/* ----------- SOUS-MENU ----------- */
+.sub-menu {
+  list-style: none;
+  padding-left: 2.9rem;
+  background: rgba(255, 255, 255, 0.05);
+  margin-top: -0.3rem;
+  padding-bottom: 0.6rem;
+  border-left: 2px dashed rgba(255, 255, 255, 0.2);
+  animation: slideDown 0.2s ease-in-out;
+}
+
+.sub-menu li a {
+  display: block;
+  padding: 0.45rem 0;
+  font-size: 0.88rem;
+  color: #d9dde1;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.sub-menu li a:hover {
+  color: #ffffff;
   font-weight: 500;
 }
 
-.sidebar-menu a:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  border-left-color: #3498db;
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.sidebar-menu a.active,
-.sidebar-menu a.router-link-active {
-  background: rgba(52, 152, 219, 0.2);
-  color: white;
-  border-left-color: #3498db;
+/* ----------- LOGOUT BUTTON ----------- */
+.sidebar-footer {
+  margin-top: 2rem;
+  padding: 1rem 1.5rem;
 }
 
-/* Contenu principal */
+.logout-btn {
+  width: 100%;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.7rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background: #c0392b;
+}
+
+/* ----------- CONTENT ----------- */
 .admin-content {
   grid-area: content;
+  margin: 1.2rem;
   padding: 2rem;
   background: white;
-  margin: 1rem;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  min-height: calc(100vh - 200px);
-  overflow-y: auto;
-  transition: margin 0.3s ease, filter 0.3s ease;
+  min-height: calc(100vh - 180px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: 0.3s;
 }
 
-/* Footer */
+.admin-content.blurred {
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+/* ----------- FOOTER ----------- */
 .admin-footer {
   grid-area: footer;
   background: #0355a7;
-  color: #ecf0f1;
-  text-align: center;
+  color: #e9ecef;
   padding: 1rem;
-  margin-top: auto;
+  text-align: center;
 }
 
-/* Animation pour les liens */
-.sidebar-menu a {
-  position: relative;
-  overflow: hidden;
+/* ----------- RESPONSIVE ----------- */
+.sidebar-toggle {
+  display: none;
 }
 
-.sidebar-menu a::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-  transition: left 0.5s;
-}
-
-.sidebar-menu a:hover::before {
-  left: 100%;
-}
-
-/* Style pour le lien de déconnexion */
-.sidebar-menu li:last-child a {
-  margin-top: 2rem;
-  background: rgba(231, 76, 60, 0.1);
-  color: #e74c3c;
-  border-left-color: #e74c3c;
-}
-
-.sidebar-menu li:last-child a:hover {
-  background: rgba(231, 76, 60, 0.2);
-  color: #c0392b;
-}
-
-/* Scrollbar personnalisée pour le contenu */
-.admin-content::-webkit-scrollbar {
-  width: 6px;
-}
-
-.admin-content::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 3px;
-}
-
-.admin-content::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 3px;
-}
-
-.admin-content::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
-}
-
-/* Sidebar overlay et responsive */
 @media (max-width: 768px) {
   :host {
     grid-template-areas:
@@ -175,21 +199,15 @@
       "content"
       "footer";
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto;
   }
 
   .sidebar {
     position: fixed;
+    left: -250px;
     top: 0;
-    left: -220px; /* caché par défaut */
-    width: 220px;
     height: 100vh;
-    background: #0355a7;
-    padding: 1rem 0;
-    transition: left 0.3s ease;
     z-index: 2000;
-    overflow-y: auto;
-    box-shadow: 2px 0 8px rgba(0,0,0,0.2);
+    width: 250px;
   }
 
   .sidebar.open {
@@ -201,70 +219,17 @@
     position: fixed;
     top: 1rem;
     left: 1rem;
-    background: #0863e2;
+    background: #0355a7;
     color: white;
     border: none;
-    padding: 0.5rem 0.75rem;
-    font-size: 1.2rem;
+    padding: 0.6rem 0.8rem;
     border-radius: 6px;
     z-index: 2100;
-    cursor: pointer;
+    font-size: 1.4rem;
   }
 
-  /* Contenu principal responsive */
   .admin-content {
-    margin-left: 10px;
-    margin-right: 10px;
-    padding: 1rem;
-    border-radius: 8px;
+    margin: 0.7rem;
+    padding: 1.2rem;
   }
-
-  .sidebar.open ~ .admin-content {
-    margin-left: 230px; /* contenu décalé quand sidebar ouverte */
-  }
-
-  .admin-content.blurred {
-    filter: blur(1px);
-    pointer-events: none;
-  }
-
-  /* Menu réduit par défaut */
-  .sidebar-mini {
-    width: 50px;
-    padding: 0.5rem 0;
-    overflow-x: hidden;
-  }
-
-  .sidebar-mini ~ .admin-content {
-    margin-left: 60px;
-  }
-
-  .sidebar-menu li a {
-    font-size: 0.85rem;
-    padding-left: 0.5rem;
-  }
-}
-/* Sidebar Footer pour le bouton déconnexion */
-.sidebar-footer {
-  margin-top: auto; /* pousse le bouton en bas */
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: center;
-}
-
-/* Bouton Déconnexion */
-.logout-btn {
-  width: 100%;
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 0.75rem 0;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.logout-btn:hover {
-  background-color: #c0392b;
 }
