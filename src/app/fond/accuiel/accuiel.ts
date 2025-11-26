@@ -3,6 +3,7 @@ import { CommonModule, ViewportScroller } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+
 import { Accueil, ContactForm, Formation } from '../../services/accueil';
 import { FormationComponent } from '../formation/formation';
 import { ActualiteListComponent } from '../actualite-list/actualite-list';
@@ -17,18 +18,16 @@ import { AproposComponent } from '../../apropos/apropos';
     HttpClientModule,
     FormationComponent,
     ActualiteListComponent,
-    AproposComponent,
   ],
   templateUrl: './accuiel.html',
   styleUrls: ['./accuiel.css'],
 })
 export class Accuiel implements OnInit {
-  contactForm: FormGroup;
+  contactForm!: FormGroup;
   isLoading = false;
   messageSent = false;
   errorMessage = '';
 
-  // Nouvelles propriétés pour les formations
   formations: Formation[] = [];
   loadingFormations = false;
   errorFormations = '';
@@ -37,18 +36,19 @@ export class Accuiel implements OnInit {
     private fb: FormBuilder,
     private accueil: Accueil,
     private viewportScroller: ViewportScroller
-  ) {
-    this.contactForm = this.createForm();
-  }
+  ) {}
 
   ngOnInit() {
+    this.contactForm = this.createForm();
     this.loadRecentFormations();
   }
 
+  // Formulaire complet avec subject ajouté
   private createForm(): FormGroup {
     return this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
+      subject: [''], // champ ajouté
       message: ['', [Validators.required, Validators.minLength(10)]],
     });
   }
@@ -80,7 +80,7 @@ export class Accuiel implements OnInit {
     event.target.src = 'assets/default-formation.png';
   }
 
-  // Méthode pour l'envoi du formulaire de contact
+  // Méthode d'envoi du formulaire
   onSubmit(): void {
     if (this.contactForm.valid) {
       this.isLoading = true;
@@ -94,22 +94,20 @@ export class Accuiel implements OnInit {
           this.messageSent = true;
           this.contactForm.reset();
 
-          // Ajouter fade out avant de masquer complètement
           setTimeout(() => {
             const alert = document.querySelector('.alert-success');
             if (alert) alert.classList.add('fade-out');
-          }, 1500); // attendre 1,5s avant fade out
+          }, 1500);
 
           setTimeout(() => {
-            this.messageSent = false; // retire le message après l'animation
-          }, 2000); // correspond à la durée totale (fade + buffer)
+            this.messageSent = false;
+          }, 2000);
         },
         error: (error) => {
           this.isLoading = false;
           this.errorMessage =
             error.error?.error || "Erreur lors de l'envoi du message. Veuillez réessayer.";
 
-          // Ajouter fade out pour message d'erreur
           setTimeout(() => {
             const alert = document.querySelector('.alert-danger');
             if (alert) alert.classList.add('fade-out');
@@ -130,17 +128,19 @@ export class Accuiel implements OnInit {
   private markFormGroupTouched(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach((key) => {
       const control = formGroup.get(key);
-      if (control) {
-        control.markAsTouched();
-      }
+      if (control) control.markAsTouched();
     });
   }
 
+  // Getters pour le template
   get name() {
     return this.contactForm.get('name');
   }
   get email() {
     return this.contactForm.get('email');
+  }
+  get subject() {
+    return this.contactForm.get('subject');
   }
   get message() {
     return this.contactForm.get('message');
